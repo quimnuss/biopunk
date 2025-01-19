@@ -1,0 +1,143 @@
+[gd_scene load_steps=25 format=3 uid="uid://ecrpsuk7buqt"]
+
+[ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
+[ext_resource type="Script" path="res://objects/actors/player.gd" id="1_hqwqt"]
+[ext_resource type="Script" path="res://objects/camera_3d.gd" id="2_cslmb"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_eaxvd"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_lsp1g"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_xfoq2"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bv01g"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qfpdu"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_w5lio"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ag16o"]
+noise = SubResource("FastNoiseLite_w5lio")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s57ir"]
+albedo_color = Color(1, 0.635294, 0.329412, 1)
+roughness_texture = SubResource("NoiseTexture2D_ag16o")
+normal_texture = ExtResource("1_eb0w6")
+heightmap_scale = 3.845
+heightmap_texture = ExtResource("1_eb0w6")
+subsurf_scatter_strength = 0.78
+
+[sub_resource type="BoxMesh" id="BoxMesh_hflk2"]
+lightmap_size_hint = Vector2i(1004, 516)
+material = SubResource("StandardMaterial3D_s57ir")
+add_uv2 = true
+size = Vector3(100, 1, 100)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_geqgn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3rtbl"]
+albedo_color = Color(0.431373, 0.470588, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_njp2r"]
+material = SubResource("StandardMaterial3D_3rtbl")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8lfwb"]
+albedo_color = Color(1, 0.698039, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_jhhu6"]
+material = SubResource("StandardMaterial3D_8lfwb")
+
+[sub_resource type="Resource" id="Resource_i1rmk"]
+script = ExtResource("3_lsp1g")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhk46"]
+albedo_color = Color(0.145098, 1, 0.341176, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_vf5h3"]
+lightmap_size_hint = Vector2i(14, 21)
+material = SubResource("StandardMaterial3D_nhk46")
+add_uv2 = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ta762"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sunki"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ln10i"]
+
+[sub_resource type="Environment" id="Environment_ckg05"]
+volumetric_fog_enabled = true
+
+[node name="ArenaSandbox" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_bv01g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_qfpdu")
+
+[node name="GroundMesh" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("BoxMesh_hflk2")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.73711, 0)
+script = ExtResource("1_hqwqt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_geqgn")
+
+[node name="Body" type="MeshInstance3D" parent="CharacterBody3D"]
+gi_mode = 2
+mesh = SubResource("CapsuleMesh_njp2r")
+
+[node name="Eyes" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0233663, 0.461138, -0.403661)
+mesh = SubResource("SphereMesh_jhhu6")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.865388, 0.501103, 0, -0.501103, 0.865388, 0, 5.5011, 5.86539)
+script = ExtResource("2_cslmb")
+
+[node name="PhantomCameraHost" type="Node" parent="CharacterBody3D/Camera3D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("3_xfoq2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.31352, 0.778988, -0.543032, 0.389494, 0.627039, 0.674623, 0.866025, 0, -0.5, 0, 10, 0)
+shadow_enabled = true
+
+[node name="PhantomCamera3D" type="Node3D" parent="." node_paths=PackedStringArray("follow_target")]
+transform = Transform3D(1, 0, 0, 0, 0.865388, 0.501103, 0, -0.501103, 0.865388, 0, 8.23822, 5.86539)
+script = ExtResource("2_eaxvd")
+follow_mode = 6
+follow_target = NodePath("../CharacterBody3D")
+tween_resource = SubResource("Resource_i1rmk")
+follow_offset = Vector3(0, 5, 5)
+follow_damping = true
+
+[node name="Attrezzo" type="Node" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Attrezzo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.75956)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/StaticBody3D"]
+mesh = SubResource("PrismMesh_vf5h3")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/StaticBody3D"]
+shape = SubResource("SphereShape3D_ta762")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Attrezzo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.83344, 1.15215, -9.69895)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/StaticBody3D2"]
+shape = SubResource("BoxShape3D_sunki")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/StaticBody3D2"]
+mesh = SubResource("BoxMesh_ln10i")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ckg05")
