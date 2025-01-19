@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="biopunk"
-run/main_scene="res://arenas/arena_sandbox.tscn"
+run/main_scene="res://arenas/player_arena_sandbox.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
