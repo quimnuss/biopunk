@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=24 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://objects/camera_3d.gd" id="2_cslmb"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_eaxvd"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_lsp1g"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_xfoq2"]
+[ext_resource type="Script" path="res://actors/components/circle_movement.gd" id="6_ncmam"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bv01g"]
 
@@ -43,6 +44,11 @@ duration = 1.0
 transition = 0
 ease = 2
 
+[sub_resource type="PrismMesh" id="PrismMesh_lkhwp"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ta762"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhk46"]
 albedo_color = Color(0.145098, 1, 0.341176, 1)
 
@@ -50,8 +56,6 @@ albedo_color = Color(0.145098, 1, 0.341176, 1)
 lightmap_size_hint = Vector2i(14, 21)
 material = SubResource("StandardMaterial3D_nhk46")
 add_uv2 = true
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_ta762"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ck6kq"]
 radius = 0.2
@@ -78,7 +82,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 mesh = SubResource("BoxMesh_hflk2")
 
 [node name="Marker3D" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.52705, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.472948, -11)
 
 [node name="Camera3D" type="Camera3D" parent="Marker3D"]
 transform = Transform3D(1, 0, 0, 0, 0.865388, 0.501103, 0, -0.501103, 0.865388, 0, 3.5011, 3.86539)
@@ -97,7 +101,7 @@ transform = Transform3D(-0.31352, 0.778988, -0.543032, 0.389494, 0.627039, 0.674
 shadow_enabled = true
 
 [node name="PhantomCamera3D" type="Node3D" parent="." node_paths=PackedStringArray("follow_target")]
-transform = Transform3D(1, 0, 0, 0, 0.865388, 0.501103, 0, -0.501103, 0.865388, 0, 12.0282, 3.86539)
+transform = Transform3D(1, 0, 0, 0, 0.865388, 0.501103, 0, -0.501103, 0.865388, 0, 3.02815, -7.13461)
 script = ExtResource("2_eaxvd")
 follow_mode = 6
 follow_target = NodePath("../Marker3D")
@@ -107,29 +111,44 @@ follow_damping = true
 
 [node name="Attrezzo" type="Node" parent="."]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Attrezzo"]
+[node name="Marker3D" type="Marker3D" parent="Attrezzo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.0827737, -14)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/Marker3D"]
+mesh = SubResource("PrismMesh_lkhwp")
+
+[node name="TriAnimal" type="CharacterBody3D" parent="Attrezzo"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.75956)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
-mesh = SubResource("PrismMesh_vf5h3")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
 shape = SubResource("SphereShape3D_ta762")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Attrezzo/StaticBody3D"]
+[node name="MeshPivot" type="Node3D" parent="Attrezzo/TriAnimal"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
+mesh = SubResource("PrismMesh_vf5h3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.302914, 0.371734)
 mesh = SubResource("CapsuleMesh_ck6kq")
+skeleton = NodePath("../..")
 
-[node name="Eyes" type="MeshInstance3D" parent="Attrezzo/StaticBody3D"]
+[node name="Eyes" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.6, 0.3)
 mesh = SubResource("CapsuleMesh_ck6kq")
+skeleton = NodePath("../..")
 
-[node name="Eyes2" type="MeshInstance3D" parent="Attrezzo/StaticBody3D"]
+[node name="Eyes2" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.6, 0.3)
 mesh = SubResource("CapsuleMesh_ck6kq")
+skeleton = NodePath("../..")
+
+[node name="CircleMovement" type="Node" parent="Attrezzo/TriAnimal" node_paths=PackedStringArray("target")]
+script = ExtResource("6_ncmam")
+target = NodePath("../../Marker3D")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="Attrezzo"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.83344, 1.15215, -9.69895)
