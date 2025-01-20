@@ -1,6 +1,7 @@
-[gd_scene load_steps=30 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=39 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
+[ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
 [ext_resource type="Script" path="res://objects/camera_3d.gd" id="2_cslmb"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_eaxvd"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_lsp1g"]
@@ -8,9 +9,12 @@
 [ext_resource type="Script" path="res://actors/components/circle_movement.gd" id="6_ncmam"]
 [ext_resource type="Script" path="res://actors/tri_animal.gd" id="6_tuwle"]
 [ext_resource type="Script" path="res://actors/components/patrol_movement.gd" id="8_svy4v"]
+[ext_resource type="Script" path="res://actors/components/move_to.gd" id="9_3tuhb"]
+[ext_resource type="PackedScene" uid="uid://cng3sdabbh2gw" path="res://actors/plant.tscn" id="10_3o4ri"]
+[ext_resource type="Script" path="res://scripts/pickable.gd" id="12_elay6"]
+[ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 
 [sub_resource type="Environment" id="Environment_ckg05"]
-volumetric_fog_enabled = true
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bv01g"]
 
@@ -78,9 +82,22 @@ add_uv2 = true
 radius = 0.2
 height = 0.5
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_us0cf"]
+radius = 10.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b6r0l"]
+radius = 1.5
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_sunki"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ln10i"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sh0mn"]
+albedo_color = Color(0.682353, 0.482353, 0.466667, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_t3kuj"]
+material = SubResource("StandardMaterial3D_sh0mn")
+size = Vector3(20, 0.2, 1)
 
 [node name="PlayerArenaSandbox" type="Node3D"]
 
@@ -88,9 +105,12 @@ height = 0.5
 environment = SubResource("Environment_ckg05")
 
 [node name="Camera3D2" type="Camera3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0.866025, -0.5, 0, 0.5, 0.866025, 1, 3.78552e-08, -2.18557e-08, -20, 17, 0)
+transform = Transform3D(-4.30758e-08, 0.93839, -0.345577, 7.42731e-09, 0.345577, 0.93839, 1, 3.78552e-08, -2.18557e-08, -12.2054, 14.1777, 0)
 current = true
 fov = 80.0
+
+[node name="MouseSelector" type="Node" parent="Camera3D2"]
+script = ExtResource("1_kjksx")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 physics_material_override = SubResource("PhysicsMaterial_bv01g")
@@ -219,12 +239,29 @@ target = NodePath("../../RotationTarget")
 [node name="PatrolMovement" type="Node" parent="Attrezzo/TriAnimal"]
 script = ExtResource("8_svy4v")
 
+[node name="MoveTo" type="Node" parent="Attrezzo/TriAnimal"]
+script = ExtResource("9_3tuhb")
+
 [node name="DebugLabel" type="Label3D" parent="Attrezzo/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31204, 0)
 text = "999"
 
 [node name="Camera3D" type="Camera3D" parent="Attrezzo/TriAnimal"]
 transform = Transform3D(-1, -2.99003e-08, 8.21505e-08, 0, 0.939693, 0.34202, -8.74228e-08, 0.34202, -0.939693, 0, 3, -4)
+
+[node name="Sensor" type="Area3D" parent="Attrezzo/TriAnimal"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal/Sensor"]
+shape = SubResource("CylinderShape3D_us0cf")
+
+[node name="ReachSensor" type="Area3D" parent="Attrezzo/TriAnimal"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal/ReachSensor"]
+shape = SubResource("CylinderShape3D_b6r0l")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="Attrezzo"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.83344, 1.15215, -9.69895)
@@ -235,4 +272,41 @@ shape = SubResource("BoxShape3D_sunki")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/StaticBody3D2"]
 mesh = SubResource("BoxMesh_ln10i")
 
+[node name="Plant4" parent="Attrezzo" instance=ExtResource("10_3o4ri")]
+
+[node name="Plant2" parent="Attrezzo" instance=ExtResource("10_3o4ri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.10217, 0, 10.5263)
+
+[node name="Plant3" parent="Attrezzo" instance=ExtResource("10_3o4ri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80711, 0, 12.9817)
+
+[node name="Shelf" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -14, 6, 0)
+
+[node name="Plant" parent="Shelf" instance=ExtResource("10_3o4ri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0.937195, 0)
+collision_layer = 1
+
+[node name="Pickable" type="Node" parent="Shelf/Plant"]
+script = ExtResource("12_elay6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shelf"]
+mesh = SubResource("BoxMesh_t3kuj")
+
+[node name="DroppableLogic" type="Node" parent="."]
+script = ExtResource("13_rhjl3")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 111.0
+offset_bottom = 83.0
+theme_override_font_sizes/font_size = 60
+text = "test"
+
+[connection signal="info" from="Attrezzo/TriAnimal" to="Attrezzo/TriAnimal/DebugLabel" method="set_text"]
+[connection signal="info" from="Attrezzo/TriAnimal" to="Label" method="set_text"]
 [connection signal="info" from="Attrezzo/TriAnimal/PatrolMovement" to="Attrezzo/TriAnimal/DebugLabel" method="set_text"]
+[connection signal="info" from="Attrezzo/TriAnimal/PatrolMovement" to="Label" method="set_text"]
+[connection signal="body_entered" from="Attrezzo/TriAnimal/Sensor" to="Attrezzo/TriAnimal" method="_on_sensor_body_entered"]
+[connection signal="body_entered" from="Attrezzo/TriAnimal/ReachSensor" to="Attrezzo/TriAnimal" method="_on_reach_sensor_body_entered"]
+[connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]

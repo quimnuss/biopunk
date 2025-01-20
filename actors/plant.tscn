@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://cng3sdabbh2gw"]
+
+[ext_resource type="Script" path="res://actors/plant.gd" id="1_hghx1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pagsu"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(1, 1, 1, 0.458824)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5mtyb"]
+albedo_color = Color(1, 0.815686, 0.372549, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_r7of2"]
+material = SubResource("StandardMaterial3D_5mtyb")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5yoqs"]
+
+[node name="Plant" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_hghx1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_overlay = SubResource("StandardMaterial3D_pagsu")
+mesh = SubResource("SphereMesh_r7of2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_5yoqs")
