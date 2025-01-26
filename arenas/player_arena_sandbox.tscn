@@ -172,9 +172,9 @@ top_level = true
 visible = false
 script = ExtResource("2_eaxvd")
 follow_mode = 2
-follow_target = NodePath("../Fauna/TriAnimal")
+follow_target = NodePath("../Attrezzo/TriAnimal")
 look_at_mode = 1
-look_at_target = NodePath("../Fauna/TriAnimal")
+look_at_target = NodePath("../Attrezzo/TriAnimal")
 tween_resource = SubResource("Resource_i1rmk")
 follow_offset = Vector3(0, 3, -3)
 
@@ -196,70 +196,70 @@ mesh = SubResource("PrismMesh_bcvey")
 
 [node name="Fauna" type="Node" parent="."]
 
-[node name="TriAnimal" type="CharacterBody3D" parent="Fauna"]
+[node name="Attrezzo" type="Node" parent="."]
+
+[node name="TriAnimal" type="CharacterBody3D" parent="Attrezzo"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.7596)
 script = ExtResource("6_tuwle")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
 shape = SubResource("SphereShape3D_ta762")
 
-[node name="MeshPivot" type="Node3D" parent="Fauna/TriAnimal"]
+[node name="MeshPivot" type="Node3D" parent="Attrezzo/TriAnimal"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
 mesh = SubResource("PrismMesh_vf5h3")
-skeleton = NodePath("../../../../Attrezzo")
+skeleton = NodePath("../../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.302914, 0.371734)
 mesh = SubResource("CapsuleMesh_ck6kq")
 skeleton = NodePath("../..")
 
-[node name="Eyes" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
+[node name="Eyes" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.6, 0.3)
 mesh = SubResource("CapsuleMesh_ck6kq")
 skeleton = NodePath("../..")
 
-[node name="Eyes2" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
+[node name="Eyes2" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.6, 0.3)
 mesh = SubResource("CapsuleMesh_ck6kq")
 skeleton = NodePath("../..")
 
-[node name="CircleMovement" type="Node" parent="Fauna/TriAnimal" node_paths=PackedStringArray("target")]
+[node name="CircleMovement" type="Node" parent="Attrezzo/TriAnimal" node_paths=PackedStringArray("target")]
 process_mode = 4
 script = ExtResource("6_ncmam")
-target = NodePath("../../../Attrezzo/RotationTarget")
+target = NodePath("../../RotationTarget")
 
-[node name="PatrolMovement" type="Node" parent="Fauna/TriAnimal"]
+[node name="PatrolMovement" type="Node" parent="Attrezzo/TriAnimal"]
 script = ExtResource("8_svy4v")
 
-[node name="MoveTo" type="Node" parent="Fauna/TriAnimal"]
+[node name="MoveTo" type="Node" parent="Attrezzo/TriAnimal"]
 script = ExtResource("9_3tuhb")
 
-[node name="DebugLabel" type="Label3D" parent="Fauna/TriAnimal"]
+[node name="DebugLabel" type="Label3D" parent="Attrezzo/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31204, 0)
 text = "999"
 
-[node name="Camera3D" type="Camera3D" parent="Fauna/TriAnimal"]
+[node name="Camera3D" type="Camera3D" parent="Attrezzo/TriAnimal"]
 transform = Transform3D(-1, -2.99003e-08, 8.21505e-08, 0, 0.939693, 0.34202, -8.74228e-08, 0.34202, -0.939693, 0, 3, -4)
 
-[node name="Sensor" type="Area3D" parent="Fauna/TriAnimal"]
+[node name="Sensor" type="Area3D" parent="Attrezzo/TriAnimal"]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal/Sensor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal/Sensor"]
 shape = SubResource("CylinderShape3D_us0cf")
 
-[node name="ReachSensor" type="Area3D" parent="Fauna/TriAnimal"]
+[node name="ReachSensor" type="Area3D" parent="Attrezzo/TriAnimal"]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal/ReachSensor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal/ReachSensor"]
 shape = SubResource("CylinderShape3D_b6r0l")
-
-[node name="Attrezzo" type="Node" parent="."]
 
 [node name="tree" parent="Attrezzo" instance=ExtResource("14_xc82r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66489, -0.5, -1.32291)
@@ -309,11 +309,11 @@ offset_bottom = 83.0
 theme_override_font_sizes/font_size = 60
 text = "test"
 
-[connection signal="info" from="Fauna/TriAnimal" to="Fauna/TriAnimal/DebugLabel" method="set_text"]
-[connection signal="info" from="Fauna/TriAnimal" to="Label" method="set_text"]
-[connection signal="info" from="Fauna/TriAnimal/PatrolMovement" to="Fauna/TriAnimal/DebugLabel" method="set_text"]
-[connection signal="info" from="Fauna/TriAnimal/PatrolMovement" to="Label" method="set_text"]
-[connection signal="body_entered" from="Fauna/TriAnimal/Sensor" to="Fauna/TriAnimal" method="_on_sensor_body_entered"]
-[connection signal="body_entered" from="Fauna/TriAnimal/ReachSensor" to="Fauna/TriAnimal" method="_on_reach_sensor_body_entered"]
+[connection signal="info" from="Attrezzo/TriAnimal" to="Attrezzo/TriAnimal/DebugLabel" method="set_text"]
+[connection signal="info" from="Attrezzo/TriAnimal" to="Label" method="set_text"]
+[connection signal="info" from="Attrezzo/TriAnimal/PatrolMovement" to="Attrezzo/TriAnimal/DebugLabel" method="set_text"]
+[connection signal="info" from="Attrezzo/TriAnimal/PatrolMovement" to="Label" method="set_text"]
+[connection signal="body_entered" from="Attrezzo/TriAnimal/Sensor" to="Attrezzo/TriAnimal" method="_on_sensor_body_entered"]
+[connection signal="body_entered" from="Attrezzo/TriAnimal/ReachSensor" to="Attrezzo/TriAnimal" method="_on_reach_sensor_body_entered"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]
