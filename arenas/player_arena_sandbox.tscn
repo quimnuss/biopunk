@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=43 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -7,7 +7,8 @@
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_lsp1g"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_xfoq2"]
 [ext_resource type="Script" path="res://actors/components/circle_movement.gd" id="6_ncmam"]
-[ext_resource type="Script" path="res://actors/tri_animal.gd" id="6_tuwle"]
+[ext_resource type="Script" path="res://actors/tri_animal/tri_animal.gd" id="6_tuwle"]
+[ext_resource type="Material" uid="uid://cx7uom35ef3p6" path="res://actors/tri_animal/mat_eyes.tres" id="8_85ab7"]
 [ext_resource type="Script" path="res://actors/components/patrol_movement.gd" id="8_svy4v"]
 [ext_resource type="Script" path="res://actors/components/move_to.gd" id="9_3tuhb"]
 [ext_resource type="PackedScene" uid="uid://cng3sdabbh2gw" path="res://actors/plant.tscn" id="10_3o4ri"]
@@ -71,14 +72,23 @@ size = Vector3(0.2, 0.2, 0.5)
 [sub_resource type="SphereShape3D" id="SphereShape3D_ta762"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhk46"]
-albedo_color = Color(0.145098, 1, 0.341176, 1)
+albedo_color = Color(0.554016, 0.943804, 0.599484, 1)
 
 [sub_resource type="PrismMesh" id="PrismMesh_vf5h3"]
 lightmap_size_hint = Vector2i(14, 21)
 material = SubResource("StandardMaterial3D_nhk46")
 add_uv2 = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q33u0"]
+albedo_color = Color(1, 0.505882, 0.486275, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ycnld"]
+material = SubResource("StandardMaterial3D_q33u0")
+radius = 0.2
+height = 0.5
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ck6kq"]
+material = ExtResource("8_85ab7")
 radius = 0.2
 height = 0.5
 
@@ -167,16 +177,14 @@ mesh = SubResource("BoxMesh_sxxet")
 transform = Transform3D(-0.31352, 0.778988, -0.543032, 0.389494, 0.627039, 0.674623, 0.866025, 0, -0.5, 0, 10, 0)
 shadow_enabled = true
 
-[node name="PhantomCamera3D" type="Node3D" parent="." node_paths=PackedStringArray("follow_target", "look_at_target")]
+[node name="PhantomCamera3D" type="Node3D" parent="."]
 process_mode = 4
 transform = Transform3D(0.999592, 0, 0, 0, 0.999999, 0, 0, 0, 0.999657, 0, 3, -13.7596)
 top_level = true
 visible = false
 script = ExtResource("2_eaxvd")
 follow_mode = 2
-follow_target = NodePath("../TriAnimal")
 look_at_mode = 1
-look_at_target = NodePath("../TriAnimal")
 tween_resource = SubResource("Resource_i1rmk")
 follow_offset = Vector3(0, 3, -3)
 
@@ -198,70 +206,70 @@ mesh = SubResource("PrismMesh_bcvey")
 
 [node name="Fauna" type="Node" parent="."]
 
-[node name="Attrezzo" type="Node" parent="."]
-
-[node name="TriAnimal" type="CharacterBody3D" parent="Attrezzo"]
+[node name="TriAnimal" type="CharacterBody3D" parent="Fauna"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.7596)
 script = ExtResource("6_tuwle")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
 shape = SubResource("SphereShape3D_ta762")
 
-[node name="MeshPivot" type="Node3D" parent="Attrezzo/TriAnimal"]
+[node name="MeshPivot" type="Node3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
 mesh = SubResource("PrismMesh_vf5h3")
-skeleton = NodePath("../../..")
+skeleton = NodePath("../../../../Attrezzo")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
+[node name="Feet" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.302914, 0.371734)
-mesh = SubResource("CapsuleMesh_ck6kq")
+mesh = SubResource("CapsuleMesh_ycnld")
 skeleton = NodePath("../..")
 
-[node name="Eyes" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
+[node name="Eyes" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.6, 0.3)
 mesh = SubResource("CapsuleMesh_ck6kq")
 skeleton = NodePath("../..")
 
-[node name="Eyes2" type="MeshInstance3D" parent="Attrezzo/TriAnimal/MeshPivot"]
+[node name="Eyes2" type="MeshInstance3D" parent="Fauna/TriAnimal/MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.6, 0.3)
 mesh = SubResource("CapsuleMesh_ck6kq")
 skeleton = NodePath("../..")
 
-[node name="CircleMovement" type="Node" parent="Attrezzo/TriAnimal" node_paths=PackedStringArray("target")]
+[node name="CircleMovement" type="Node" parent="Fauna/TriAnimal" node_paths=PackedStringArray("target")]
 process_mode = 4
 script = ExtResource("6_ncmam")
-target = NodePath("../../RotationTarget")
+target = NodePath("../../../Attrezzo/RotationTarget")
 
-[node name="PatrolMovement" type="Node" parent="Attrezzo/TriAnimal"]
+[node name="PatrolMovement" type="Node" parent="Fauna/TriAnimal"]
 script = ExtResource("8_svy4v")
 
-[node name="MoveTo" type="Node" parent="Attrezzo/TriAnimal"]
+[node name="MoveTo" type="Node" parent="Fauna/TriAnimal"]
 script = ExtResource("9_3tuhb")
 
-[node name="DebugLabel" type="Label3D" parent="Attrezzo/TriAnimal"]
+[node name="DebugLabel" type="Label3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31204, 0)
 text = "999"
 
-[node name="Camera3D" type="Camera3D" parent="Attrezzo/TriAnimal"]
+[node name="Camera3D" type="Camera3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(-1, -2.99003e-08, 8.21505e-08, 0, 0.939693, 0.34202, -8.74228e-08, 0.34202, -0.939693, 0, 3, -4)
 
-[node name="Sensor" type="Area3D" parent="Attrezzo/TriAnimal"]
+[node name="Sensor" type="Area3D" parent="Fauna/TriAnimal"]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal/Sensor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal/Sensor"]
 shape = SubResource("CylinderShape3D_us0cf")
 
-[node name="ReachSensor" type="Area3D" parent="Attrezzo/TriAnimal"]
+[node name="ReachSensor" type="Area3D" parent="Fauna/TriAnimal"]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/TriAnimal/ReachSensor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal/ReachSensor"]
 shape = SubResource("CylinderShape3D_b6r0l")
+
+[node name="Attrezzo" type="Node" parent="."]
 
 [node name="tree" parent="Attrezzo" instance=ExtResource("14_xc82r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66489, -0.5, -1.32291)
@@ -312,14 +320,6 @@ offset_bottom = 83.0
 theme_override_font_sizes/font_size = 60
 text = "test"
 
-[node name="Fauna" type="Node" parent="."]
-
-[connection signal="info" from="TriAnimal" to="TriAnimal/DebugLabel" method="set_text"]
-[connection signal="info" from="TriAnimal" to="Label" method="set_text"]
-[connection signal="info" from="TriAnimal/PatrolMovement" to="TriAnimal/DebugLabel" method="set_text"]
-[connection signal="info" from="TriAnimal/PatrolMovement" to="Label" method="set_text"]
-[connection signal="body_entered" from="TriAnimal/Sensor" to="TriAnimal" method="_on_sensor_body_entered"]
-[connection signal="body_entered" from="TriAnimal/ReachSensor" to="TriAnimal" method="_on_reach_sensor_body_entered"]
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]
