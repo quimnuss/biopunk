@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
 
 [sub_resource type="Environment" id="Environment_ckg05"]
+ambient_light_source = 3
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bv01g"]
 
@@ -35,6 +36,7 @@ noise = SubResource("FastNoiseLite_w5lio")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s57ir"]
 albedo_color = Color(1, 0.635294, 0.329412, 1)
+metallic_specular = 0.19
 roughness_texture = SubResource("NoiseTexture2D_ag16o")
 normal_texture = ExtResource("1_eb0w6")
 heightmap_scale = 3.845
@@ -172,9 +174,9 @@ top_level = true
 visible = false
 script = ExtResource("2_eaxvd")
 follow_mode = 2
-follow_target = NodePath("../Attrezzo/TriAnimal")
+follow_target = NodePath("../TriAnimal")
 look_at_mode = 1
-look_at_target = NodePath("../Attrezzo/TriAnimal")
+look_at_target = NodePath("../TriAnimal")
 tween_resource = SubResource("Resource_i1rmk")
 follow_offset = Vector3(0, 3, -3)
 
@@ -300,8 +302,9 @@ script = ExtResource("12_elay6")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Shelf"]
 mesh = SubResource("BoxMesh_t3kuj")
 
-[node name="DroppableLogic" type="Node" parent="."]
+[node name="DroppableLogic" type="Node3D" parent="." node_paths=PackedStringArray("dropped_parent_anchor")]
 script = ExtResource("13_rhjl3")
+dropped_parent_anchor = NodePath("../Fauna")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 111.0
@@ -309,11 +312,15 @@ offset_bottom = 83.0
 theme_override_font_sizes/font_size = 60
 text = "test"
 
-[connection signal="info" from="Attrezzo/TriAnimal" to="Attrezzo/TriAnimal/DebugLabel" method="set_text"]
-[connection signal="info" from="Attrezzo/TriAnimal" to="Label" method="set_text"]
-[connection signal="info" from="Attrezzo/TriAnimal/PatrolMovement" to="Attrezzo/TriAnimal/DebugLabel" method="set_text"]
-[connection signal="info" from="Attrezzo/TriAnimal/PatrolMovement" to="Label" method="set_text"]
-[connection signal="body_entered" from="Attrezzo/TriAnimal/Sensor" to="Attrezzo/TriAnimal" method="_on_sensor_body_entered"]
-[connection signal="body_entered" from="Attrezzo/TriAnimal/ReachSensor" to="Attrezzo/TriAnimal" method="_on_reach_sensor_body_entered"]
+[node name="Fauna" type="Node" parent="."]
+
+[connection signal="info" from="TriAnimal" to="TriAnimal/DebugLabel" method="set_text"]
+[connection signal="info" from="TriAnimal" to="Label" method="set_text"]
+[connection signal="info" from="TriAnimal/PatrolMovement" to="TriAnimal/DebugLabel" method="set_text"]
+[connection signal="info" from="TriAnimal/PatrolMovement" to="Label" method="set_text"]
+[connection signal="body_entered" from="TriAnimal/Sensor" to="TriAnimal" method="_on_sensor_body_entered"]
+[connection signal="body_entered" from="TriAnimal/ReachSensor" to="TriAnimal" method="_on_reach_sensor_body_entered"]
+[connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]
+[connection signal="picked_up" from="Shelf/Plant" to="DroppableLogic" method="_on_plant_picked_up"]

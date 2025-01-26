@@ -3,6 +3,8 @@ extends StaticBody3D
 
 var highlight_material : Material
 
+signal picked_up(actor : Node3D)
+
 func _ready():
     highlight_material = mesh_instance_3d.material_overlay
 
@@ -16,3 +18,12 @@ func highlight():
 
 func dehighlight():
     self.mesh_instance_3d.material_overlay = null
+
+func pickup():
+    prints("pickup", self.name)
+    var actor : Node3D = self.duplicate()
+    picked_up.emit(actor)
+
+func release():
+    prints("release", self.name)
+    pass
