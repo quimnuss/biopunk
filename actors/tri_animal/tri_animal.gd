@@ -1,6 +1,8 @@
 extends CharacterBody3D
 @onready var patrol_movement: Node = $PatrolMovement
 @onready var move_to: Node = $MoveTo
+@onready var sensor : Area3D = $Sensor
+@onready var reach_sensor : Area3D = $ReachSensor
 
 const SPEED = 7
 
@@ -12,6 +14,10 @@ var state : State = State.PATROL :
 @export var forced_state : State = State.NONE
 
 signal info(msg : String)
+
+func _ready():
+    sensor.body_entered.connect(_on_sensor_body_entered)
+    reach_sensor.body_entered.connect(_on_reach_sensor_body_entered)
 
 func set_state(new_state: State) -> void:
     var previous_state := state

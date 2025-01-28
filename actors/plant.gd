@@ -20,10 +20,9 @@ func dehighlight():
     self.mesh_instance_3d.material_overlay = null
 
 func pickup():
-    prints("pickup", self.name)
     var actor : Node3D = self.duplicate()
     picked_up.emit(actor)
 
 func release():
-    prints("release", self.name)
+    # TODO set collision mask on release only
     pass

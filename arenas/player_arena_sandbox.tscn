@@ -211,6 +211,7 @@ mesh = SubResource("PrismMesh_bcvey")
 
 [node name="TriAnimal" type="CharacterBody3D" parent="Fauna"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.7596)
+collision_mask = 3
 script = ExtResource("6_tuwle")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal"]
@@ -305,7 +306,6 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -14, 6
 
 [node name="Plant" parent="Shelf" instance=ExtResource("10_3o4ri")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0.937195, 0)
-collision_layer = 1
 
 [node name="Pickable" type="Node" parent="Shelf/Plant"]
 script = ExtResource("12_elay6")
@@ -331,6 +331,8 @@ offset_bottom = 83.0
 theme_override_font_sizes/font_size = 60
 text = "test"
 
+[connection signal="info" from="Fauna/TriAnimal" to="Label" method="set_text"]
+[connection signal="info" from="Fauna/TriAnimal/PatrolMovement" to="Label" method="set_text"]
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]

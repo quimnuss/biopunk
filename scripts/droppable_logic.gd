@@ -15,8 +15,6 @@ func _ready():
     ray_query.collide_with_areas = true
     ray_query.collision_mask = 0x00000080
 
-
-
 func _physics_process(delta):
     if is_instance_valid(picked_actor):
         if Input.is_action_just_released("select"):
