@@ -45,14 +45,18 @@ func _physics_process(delta: float) -> void:
             move_to.move_to(delta)
         State.EAT:
             info.emit('eat started')
-            elapsed += delta
-            if elapsed >= 3:
-                info.emit('eat done')
-                elapsed = 0
-                state = State.PATROL
+            eat(delta)
         State.NONE:
+            info.emit('No state')
             pass
 
+func eat(delta : float):
+    elapsed += delta
+    if elapsed >= 3:
+        info.emit('eat done')
+        elapsed = 0
+        state = State.PATROL
+    
 
 func _on_sensor_body_entered(body: Node3D) -> void:
     move_to.target = body

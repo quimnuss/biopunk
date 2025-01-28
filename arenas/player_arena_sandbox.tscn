@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=44 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -112,6 +112,8 @@ albedo_color = Color(0.682353, 0.482353, 0.466667, 1)
 material = SubResource("StandardMaterial3D_sh0mn")
 size = Vector3(20, 0.2, 1)
 
+[sub_resource type="TorusMesh" id="TorusMesh_5c0hk"]
+
 [node name="PlayerArenaSandbox" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -127,6 +129,7 @@ size = 25.0
 script = ExtResource("1_kjksx")
 
 [node name="Ground" type="StaticBody3D" parent="."]
+collision_layer = 129
 physics_material_override = SubResource("PhysicsMaterial_bv01g")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
@@ -313,6 +316,14 @@ mesh = SubResource("BoxMesh_t3kuj")
 [node name="DroppableLogic" type="Node3D" parent="." node_paths=PackedStringArray("dropped_parent_anchor")]
 script = ExtResource("13_rhjl3")
 dropped_parent_anchor = NodePath("../Fauna")
+
+[node name="DropMarker" type="Marker3D" parent="DroppableLogic"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -10.32, 7.84555, 0)
+gizmo_extents = 0.5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DroppableLogic/DropMarker"]
+visible = false
+mesh = SubResource("TorusMesh_5c0hk")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 111.0
