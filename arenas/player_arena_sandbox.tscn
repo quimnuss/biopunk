@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=45 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://scripts/pickable.gd" id="12_elay6"]
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
+[ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
 
 [sub_resource type="Environment" id="Environment_ckg05"]
 ambient_light_source = 3
@@ -119,13 +120,13 @@ size = Vector3(20, 0.2, 1)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ckg05")
 
-[node name="Camera3D2" type="Camera3D" parent="."]
+[node name="GodCamera" type="Camera3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0.866025, -0.5, 0, 0.5, 0.866025, 1, 3.78552e-08, -2.18557e-08, -13.0091, 15.6584, 0)
 current = true
 fov = 80.0
 size = 25.0
 
-[node name="MouseSelector" type="Node" parent="Camera3D2"]
+[node name="MouseSelector" type="Node" parent="GodCamera"]
 script = ExtResource("1_kjksx")
 
 [node name="Ground" type="StaticBody3D" parent="."]
@@ -256,7 +257,7 @@ script = ExtResource("9_3tuhb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31204, 0)
 text = "999"
 
-[node name="Camera3D" type="Camera3D" parent="Fauna/TriAnimal"]
+[node name="PlayerCamera" type="Camera3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(-1, -2.99003e-08, 8.21505e-08, 0, 0.939693, 0.34202, -8.74228e-08, 0.34202, -0.939693, 0, 3, -4)
 
 [node name="Sensor" type="Area3D" parent="Fauna/TriAnimal"]
@@ -325,15 +326,34 @@ gizmo_extents = 0.5
 visible = false
 mesh = SubResource("TorusMesh_5c0hk")
 
-[node name="Label" type="Label" parent="."]
-offset_right = 111.0
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
 offset_bottom = 83.0
+grow_horizontal = 2
+size_flags_vertical = 0
+
+[node name="GodButton" type="CheckButton" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+text = "Godmode"
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 60
 text = "test"
 
-[connection signal="info" from="Fauna/TriAnimal" to="Label" method="set_text"]
-[connection signal="info" from="Fauna/TriAnimal/PatrolMovement" to="Label" method="set_text"]
+[node name="CameraSwitcher" type="Node" parent="." node_paths=PackedStringArray("godcamera", "playercamera")]
+script = ExtResource("16_kio3u")
+godcamera = NodePath("../GodCamera")
+playercamera = NodePath("../Fauna/TriAnimal/PlayerCamera")
+
+[connection signal="info" from="Fauna/TriAnimal" to="PanelContainer/Label" method="set_text"]
+[connection signal="info" from="Fauna/TriAnimal/PatrolMovement" to="PanelContainer/Label" method="set_text"]
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]
 [connection signal="picked_up" from="Shelf/Plant" to="DroppableLogic" method="_on_plant_picked_up"]
+[connection signal="toggled" from="PanelContainer/GodButton" to="CameraSwitcher" method="_on_god_button_toggled"]
