@@ -1,4 +1,5 @@
 extends StaticBody3D
+class_name BallPlant
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 
 var highlight_material : Material

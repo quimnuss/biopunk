@@ -1,19 +1,21 @@
-[gd_scene load_steps=45 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=48 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
 [ext_resource type="Script" path="res://objects/camera_3d.gd" id="2_cslmb"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_eaxvd"]
+[ext_resource type="Script" path="res://actors/world_bounds.gd" id="3_lcykb"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_lsp1g"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_xfoq2"]
-[ext_resource type="Script" path="res://actors/components/circle_movement.gd" id="6_ncmam"]
 [ext_resource type="Script" path="res://actors/tri_animal/tri_animal.gd" id="6_tuwle"]
 [ext_resource type="Material" uid="uid://cx7uom35ef3p6" path="res://actors/tri_animal/mat_eyes.tres" id="8_85ab7"]
-[ext_resource type="Script" path="res://actors/components/patrol_movement.gd" id="8_svy4v"]
-[ext_resource type="Script" path="res://actors/components/move_to.gd" id="9_3tuhb"]
+[ext_resource type="Script" path="res://actors/components/fsm.gd" id="8_pcs66"]
 [ext_resource type="PackedScene" uid="uid://cng3sdabbh2gw" path="res://actors/plant.tscn" id="10_3o4ri"]
+[ext_resource type="PackedScene" uid="uid://bshy7uo06bimc" path="res://models/flapclap.glb" id="12_e0f3m"]
 [ext_resource type="Script" path="res://scripts/pickable.gd" id="12_elay6"]
+[ext_resource type="Script" path="res://actors/flapclap.gd" id="12_i6ri0"]
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
+[ext_resource type="Script" path="res://actors/components/moveset.gd" id="14_okc8h"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
 [ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
 
@@ -24,12 +26,6 @@ ambient_light_source = 3
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qfpdu"]
 size = Vector3(100, 1, 100)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_v71wc"]
-size = Vector3(1, 10, 100)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_d0vvu"]
-size = Vector3(120, 10, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w5lio"]
 
@@ -55,6 +51,12 @@ size = Vector3(40, 1, 40)
 size = Vector3(1, 10, 100)
 
 [sub_resource type="BoxMesh" id="BoxMesh_sxxet"]
+size = Vector3(120, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v71wc"]
+size = Vector3(1, 10, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d0vvu"]
 size = Vector3(120, 10, 1)
 
 [sub_resource type="Resource" id="Resource_i1rmk"]
@@ -99,6 +101,10 @@ radius = 10.0
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_b6r0l"]
 radius = 1.5
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hyuyr"]
+radius = 0.35
+height = 1.0
+
 [sub_resource type="PrismMesh" id="PrismMesh_lkhwp"]
 size = Vector3(0.1, 0.1, 0.1)
 
@@ -137,22 +143,6 @@ physics_material_override = SubResource("PhysicsMaterial_bv01g")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 shape = SubResource("BoxShape3D_qfpdu")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Ground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
-shape = SubResource("BoxShape3D_v71wc")
-
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="Ground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
-shape = SubResource("BoxShape3D_v71wc")
-
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="Ground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
-shape = SubResource("BoxShape3D_d0vvu")
-
-[node name="CollisionShape3D5" type="CollisionShape3D" parent="Ground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
-shape = SubResource("BoxShape3D_d0vvu")
-
 [node name="GroundMesh" type="MeshInstance3D" parent="Ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 mesh = SubResource("BoxMesh_hflk2")
@@ -176,6 +166,26 @@ mesh = SubResource("BoxMesh_sxxet")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.364376, 0, -33.1469)
 visible = false
 mesh = SubResource("BoxMesh_sxxet")
+
+[node name="WorldBounds" type="StaticBody3D" parent="."]
+collision_layer = 65
+script = ExtResource("3_lcykb")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="WorldBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
+shape = SubResource("BoxShape3D_v71wc")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="WorldBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
+shape = SubResource("BoxShape3D_v71wc")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="WorldBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+shape = SubResource("BoxShape3D_d0vvu")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="WorldBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+shape = SubResource("BoxShape3D_d0vvu")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.31352, 0.778988, -0.543032, 0.389494, 0.627039, 0.674623, 0.866025, 0, -0.5, 0, 10, 0)
@@ -212,8 +222,11 @@ mesh = SubResource("PrismMesh_bcvey")
 
 [node name="TriAnimal" type="CharacterBody3D" parent="Fauna"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.7596)
-collision_mask = 3
 script = ExtResource("6_tuwle")
+
+[node name="FSM" type="Node" parent="Fauna/TriAnimal" node_paths=PackedStringArray("moveset")]
+script = ExtResource("8_pcs66")
+moveset = NodePath("../Moveset")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
@@ -242,16 +255,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.6, 0.3)
 mesh = SubResource("CapsuleMesh_ck6kq")
 skeleton = NodePath("../..")
 
-[node name="CircleMovement" type="Node" parent="Fauna/TriAnimal" node_paths=PackedStringArray("target")]
-process_mode = 4
-script = ExtResource("6_ncmam")
-target = NodePath("../../../Attrezzo/RotationTarget")
-
-[node name="PatrolMovement" type="Node" parent="Fauna/TriAnimal"]
-script = ExtResource("8_svy4v")
-
-[node name="MoveTo" type="Node" parent="Fauna/TriAnimal"]
-script = ExtResource("9_3tuhb")
+[node name="Moveset" type="Node" parent="Fauna/TriAnimal"]
+script = ExtResource("14_okc8h")
 
 [node name="DebugLabel" type="Label3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31204, 0)
@@ -269,9 +274,48 @@ shape = SubResource("CylinderShape3D_us0cf")
 
 [node name="ReachSensor" type="Area3D" parent="Fauna/TriAnimal"]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 66
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal/ReachSensor"]
+shape = SubResource("CylinderShape3D_b6r0l")
+
+[node name="StateLabel" type="Label3D" parent="Fauna/TriAnimal"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.5, 0)
+text = "State"
+
+[node name="FlapClap" type="CharacterBody3D" parent="Fauna"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+script = ExtResource("12_i6ri0")
+
+[node name="FSM" type="Node" parent="Fauna/FlapClap" node_paths=PackedStringArray("moveset")]
+script = ExtResource("8_pcs66")
+moveset = NodePath("../Moveset")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/FlapClap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39957, 0)
+shape = SubResource("CapsuleShape3D_hyuyr")
+
+[node name="flapclap" parent="Fauna/FlapClap" instance=ExtResource("12_e0f3m")]
+
+[node name="Moveset" type="Node" parent="Fauna/FlapClap"]
+script = ExtResource("14_okc8h")
+
+[node name="StateLabel" type="Label3D" parent="Fauna/FlapClap"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.1, 0)
+text = "State"
+
+[node name="Sensor" type="Area3D" parent="Fauna/FlapClap"]
+collision_layer = 0
+collision_mask = 66
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/FlapClap/Sensor"]
+shape = SubResource("CylinderShape3D_us0cf")
+
+[node name="ReachSensor" type="Area3D" parent="Fauna/FlapClap"]
+collision_layer = 0
+collision_mask = 66
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/FlapClap/ReachSensor"]
 shape = SubResource("CylinderShape3D_b6r0l")
 
 [node name="Attrezzo" type="Node" parent="."]
@@ -350,8 +394,11 @@ script = ExtResource("16_kio3u")
 godcamera = NodePath("../GodCamera")
 playercamera = NodePath("../Fauna/TriAnimal/PlayerCamera")
 
-[connection signal="info" from="Fauna/TriAnimal" to="PanelContainer/Label" method="set_text"]
-[connection signal="info" from="Fauna/TriAnimal/PatrolMovement" to="PanelContainer/Label" method="set_text"]
+[connection signal="state_changed" from="Fauna/TriAnimal/FSM" to="Fauna/TriAnimal/StateLabel" method="set_text"]
+[connection signal="state_changed" from="Fauna/FlapClap/FSM" to="PanelContainer/Label" method="set_text"]
+[connection signal="state_changed" from="Fauna/FlapClap/FSM" to="Fauna/FlapClap/StateLabel" method="set_text"]
+[connection signal="body_entered" from="Fauna/FlapClap/Sensor" to="Fauna/FlapClap" method="_on_sensor_body_entered"]
+[connection signal="body_entered" from="Fauna/FlapClap/ReachSensor" to="Fauna/FlapClap" method="_on_reach_sensor_body_entered"]
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]

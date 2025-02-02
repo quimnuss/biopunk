@@ -1,4 +1,5 @@
 extends Node
+class_name PatrolMovement
 
 var patroled_distance : float = 0
 

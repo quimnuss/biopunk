@@ -7,12 +7,11 @@ func _ready():
     
 
 func _on_mouse_entered() -> void:
-    print('entered')
     papa.highlight()
+    
 
 func _on_mouse_exited() -> void:
     papa.dehighlight()
-
 
 
 func _on_collision_area_input_event(_camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int):

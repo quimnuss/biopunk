@@ -1,6 +1,9 @@
 # Technical Debt
 
+- [ ] enable-disable food collision bit instead of filtering body_entered since it ignores already-in food
+
 # Now
+
 
 ## Milestone: recipes demo
 - [ ] grab food
