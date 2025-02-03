@@ -1,7 +1,8 @@
-[gd_scene load_steps=48 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=52 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
+[ext_resource type="Shader" path="res://materials/postprocess_outline.gdshader" id="1_toekv"]
 [ext_resource type="Script" path="res://objects/camera_3d.gd" id="2_cslmb"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_eaxvd"]
 [ext_resource type="Script" path="res://actors/world_bounds.gd" id="3_lcykb"]
@@ -18,9 +19,30 @@
 [ext_resource type="Script" path="res://actors/components/moveset.gd" id="14_okc8h"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
 [ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
+[ext_resource type="Script" path="res://ui/fps_counter.gd" id="19_s72fw"]
 
 [sub_resource type="Environment" id="Environment_ckg05"]
 ambient_light_source = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eo5eu"]
+render_priority = 0
+shader = ExtResource("1_toekv")
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/depth_threshold = 0.025
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 1.65
+shader_parameter/min_thickness = 0.8
+shader_parameter/max_distance = 75.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_bu2rm"]
+material = SubResource("ShaderMaterial_eo5eu")
+flip_faces = true
+size = Vector2(10, 10)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bv01g"]
 
@@ -131,6 +153,11 @@ transform = Transform3D(-4.37114e-08, 0.866025, -0.5, 0, 0.5, 0.866025, 1, 3.785
 current = true
 fov = 80.0
 size = 25.0
+
+[node name="MoebiusShader" type="MeshInstance3D" parent="GodCamera"]
+transform = Transform3D(-1, 2.14378e-08, -1.45851e-07, -1.70416e-08, 0.965926, 0.258819, 1.46429e-07, 0.258819, -0.965926, 0, 0, -2)
+mesh = SubResource("QuadMesh_bu2rm")
+skeleton = NodePath("../..")
 
 [node name="MouseSelector" type="Node" parent="GodCamera"]
 script = ExtResource("1_kjksx")
@@ -265,6 +292,12 @@ text = "999"
 [node name="PlayerCamera" type="Camera3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(-1, -2.99003e-08, 8.21505e-08, 0, 0.939693, 0.34202, -8.74228e-08, 0.34202, -0.939693, 0, 3, -4)
 
+[node name="MoebiusShader" type="MeshInstance3D" parent="Fauna/TriAnimal/PlayerCamera"]
+transform = Transform3D(-1, 2.14378e-08, -1.45851e-07, -1.70416e-08, 0.965926, 0.258819, 1.46429e-07, 0.258819, -0.965926, 0, 0, -2)
+visible = false
+mesh = SubResource("QuadMesh_bu2rm")
+skeleton = NodePath("../..")
+
 [node name="Sensor" type="Area3D" parent="Fauna/TriAnimal"]
 collision_layer = 0
 collision_mask = 2
@@ -389,14 +422,20 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 60
 text = "test"
 
+[node name="FPSCounter" type="Label" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "10 FPS"
+script = ExtResource("19_s72fw")
+
 [node name="CameraSwitcher" type="Node" parent="." node_paths=PackedStringArray("godcamera", "playercamera")]
 script = ExtResource("16_kio3u")
 godcamera = NodePath("../GodCamera")
 playercamera = NodePath("../Fauna/TriAnimal/PlayerCamera")
 
 [connection signal="state_changed" from="Fauna/TriAnimal/FSM" to="Fauna/TriAnimal/StateLabel" method="set_text"]
-[connection signal="state_changed" from="Fauna/FlapClap/FSM" to="PanelContainer/Label" method="set_text"]
 [connection signal="state_changed" from="Fauna/FlapClap/FSM" to="Fauna/FlapClap/StateLabel" method="set_text"]
+[connection signal="state_changed" from="Fauna/FlapClap/FSM" to="PanelContainer/Label" method="set_text"]
 [connection signal="body_entered" from="Fauna/FlapClap/Sensor" to="Fauna/FlapClap" method="_on_sensor_body_entered"]
 [connection signal="body_entered" from="Fauna/FlapClap/ReachSensor" to="Fauna/FlapClap" method="_on_reach_sensor_body_entered"]
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
