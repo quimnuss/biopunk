@@ -4,14 +4,17 @@ extends CharacterBody3D
 @onready var reach_sensor: Area3D = $ReachSensor
 @onready var moveset: Moveset = $Moveset
 
-@onready var fsm: FSM = $FSM
+@onready var fsm: StateMachine = $FSM
+
+@export var fsm_state : String #State.StateID
 
 const SPEED = 5.0
 
 signal info(msg : String)
 
 func _physics_process(delta: float) -> void:
-    fsm.papa_physics_process(delta)
+    fsm.physics_update(delta)
+    fsm_state = fsm.state.name
 
 
 func _on_sensor_body_entered(body: Node3D) -> void:
@@ -20,4 +23,5 @@ func _on_sensor_body_entered(body: Node3D) -> void:
 
 func _on_reach_sensor_body_entered(body: Node3D) -> void:
     if body is WorldBounds:
-        fsm.state = fsm.State.REVERSE
+        fsm.to_state(State.StateID.REVERSE)
+        pass

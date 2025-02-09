@@ -4,7 +4,10 @@ class_name Moveset
 var patroled_distance : float = 0
 var patrol_direction : Vector3 = Vector3.FORWARD
 
+enum MovementType { FOLLOW, PATROL, CIRCLE, EVADE, KEEP_GOING }
+
 @export var target : Node3D
+@export var movement_type : MovementType
 
 signal info(text : String)
 signal reached
@@ -13,7 +16,6 @@ var papa : CharacterBody3D
 
 func _ready():
     papa = get_parent()
-    
 
 func move_to(delta : float):
     if not is_instance_valid(target):

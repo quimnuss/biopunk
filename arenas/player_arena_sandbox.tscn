@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=57 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -10,14 +10,19 @@
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_xfoq2"]
 [ext_resource type="Script" path="res://actors/tri_animal/tri_animal.gd" id="6_tuwle"]
 [ext_resource type="Material" uid="uid://cx7uom35ef3p6" path="res://actors/tri_animal/mat_eyes.tres" id="8_85ab7"]
-[ext_resource type="Script" path="res://actors/components/fsm.gd" id="8_pcs66"]
 [ext_resource type="PackedScene" uid="uid://cng3sdabbh2gw" path="res://actors/plant.tscn" id="10_3o4ri"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="10_xyjry"]
+[ext_resource type="Script" path="res://scripts/state_idle.gd" id="11_hjoe6"]
 [ext_resource type="PackedScene" uid="uid://bshy7uo06bimc" path="res://models/flapclap.glb" id="12_e0f3m"]
 [ext_resource type="Script" path="res://scripts/pickable.gd" id="12_elay6"]
 [ext_resource type="Script" path="res://actors/flapclap.gd" id="12_i6ri0"]
+[ext_resource type="Script" path="res://scripts/state_wander.gd" id="12_rbrth"]
+[ext_resource type="Script" path="res://scripts/state_toeat.gd" id="13_jchk0"]
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 [ext_resource type="Script" path="res://actors/components/moveset.gd" id="14_okc8h"]
+[ext_resource type="Script" path="res://scripts/state_eat.gd" id="14_vhvvj"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
+[ext_resource type="Script" path="res://scripts/state_reverse.gd" id="15_b1gol"]
 [ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
 [ext_resource type="Script" path="res://ui/fps_counter.gd" id="19_s72fw"]
 
@@ -251,9 +256,30 @@ mesh = SubResource("PrismMesh_bcvey")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.7596)
 script = ExtResource("6_tuwle")
 
-[node name="FSM" type="Node" parent="Fauna/TriAnimal" node_paths=PackedStringArray("moveset")]
-script = ExtResource("8_pcs66")
-moveset = NodePath("../Moveset")
+[node name="FSM" type="Node" parent="Fauna/TriAnimal" node_paths=PackedStringArray("initial_state", "pawn")]
+script = ExtResource("10_xyjry")
+initial_state = NodePath("Idle")
+pawn = NodePath("..")
+
+[node name="Idle" type="Node" parent="Fauna/TriAnimal/FSM"]
+script = ExtResource("11_hjoe6")
+id = 7
+
+[node name="Wander" type="Node" parent="Fauna/TriAnimal/FSM"]
+script = ExtResource("12_rbrth")
+id = 8
+
+[node name="ToEat" type="Node" parent="Fauna/TriAnimal/FSM"]
+script = ExtResource("13_jchk0")
+id = 10
+
+[node name="Eat" type="Node" parent="Fauna/TriAnimal/FSM"]
+script = ExtResource("14_vhvvj")
+id = 9
+
+[node name="Reverse" type="Node" parent="Fauna/TriAnimal/FSM"]
+script = ExtResource("15_b1gol")
+id = 12
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/TriAnimal"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
@@ -320,10 +346,6 @@ text = "State"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 script = ExtResource("12_i6ri0")
 
-[node name="FSM" type="Node" parent="Fauna/FlapClap" node_paths=PackedStringArray("moveset")]
-script = ExtResource("8_pcs66")
-moveset = NodePath("../Moveset")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fauna/FlapClap"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39957, 0)
 shape = SubResource("CapsuleShape3D_hyuyr")
@@ -332,6 +354,31 @@ shape = SubResource("CapsuleShape3D_hyuyr")
 
 [node name="Moveset" type="Node" parent="Fauna/FlapClap"]
 script = ExtResource("14_okc8h")
+
+[node name="FSM" type="Node" parent="Fauna/FlapClap" node_paths=PackedStringArray("initial_state", "pawn")]
+script = ExtResource("10_xyjry")
+initial_state = NodePath("Idle")
+pawn = NodePath("..")
+
+[node name="Idle" type="Node" parent="Fauna/FlapClap/FSM"]
+script = ExtResource("11_hjoe6")
+id = 7
+
+[node name="Wander" type="Node" parent="Fauna/FlapClap/FSM"]
+script = ExtResource("12_rbrth")
+id = 8
+
+[node name="ToEat" type="Node" parent="Fauna/FlapClap/FSM"]
+script = ExtResource("13_jchk0")
+id = 10
+
+[node name="Eat" type="Node" parent="Fauna/FlapClap/FSM"]
+script = ExtResource("14_vhvvj")
+id = 9
+
+[node name="Reverse" type="Node" parent="Fauna/FlapClap/FSM"]
+script = ExtResource("15_b1gol")
+id = 12
 
 [node name="StateLabel" type="Label3D" parent="Fauna/FlapClap"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.1, 0)
