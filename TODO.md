@@ -24,3 +24,7 @@
 # Next
 
 # Later
+
+# References
+
+https://medium.com/dotcrossdot/hierarchical-finite-state-machine-c9e3f4ce0d9e

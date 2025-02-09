@@ -433,9 +433,6 @@ script = ExtResource("16_kio3u")
 godcamera = NodePath("../GodCamera")
 playercamera = NodePath("../Fauna/TriAnimal/PlayerCamera")
 
-[connection signal="state_changed" from="Fauna/TriAnimal/FSM" to="Fauna/TriAnimal/StateLabel" method="set_text"]
-[connection signal="state_changed" from="Fauna/FlapClap/FSM" to="Fauna/FlapClap/StateLabel" method="set_text"]
-[connection signal="state_changed" from="Fauna/FlapClap/FSM" to="PanelContainer/Label" method="set_text"]
 [connection signal="body_entered" from="Fauna/FlapClap/Sensor" to="Fauna/FlapClap" method="_on_sensor_body_entered"]
 [connection signal="body_entered" from="Fauna/FlapClap/ReachSensor" to="Fauna/FlapClap" method="_on_reach_sensor_body_entered"]
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
