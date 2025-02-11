@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cng3sdabbh2gw"]
+[gd_scene load_steps=8 format=3 uid="uid://cng3sdabbh2gw"]
 
 [ext_resource type="Script" path="res://actors/plant.gd" id="1_hghx1"]
+[ext_resource type="Script" path="res://actors/components/spawner.gd" id="2_hraic"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pagsu"]
 transparency = 1
@@ -15,6 +16,9 @@ material = SubResource("StandardMaterial3D_5mtyb")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5yoqs"]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_i2ckg"]
+radius = 1.0
+
 [node name="Plant" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0, 0)
 collision_layer = 2
@@ -27,3 +31,19 @@ mesh = SubResource("SphereMesh_r7of2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_5yoqs")
+
+[node name="Spawner" type="Node3D" parent="."]
+script = ExtResource("2_hraic")
+
+[node name="Area3D" type="Area3D" parent="Spawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0, -1.71154)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Spawner/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.344689)
+shape = SubResource("CylinderShape3D_i2ckg")
+
+[node name="Timer" type="Timer" parent="Spawner"]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_timer_timeout"]
