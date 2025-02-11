@@ -8,6 +8,8 @@ extends CharacterBody3D
 
 @export var fsm_state : String #State.StateID
 
+@export var edible_actors : Array
+
 const SPEED = 5.0
 
 signal info(msg : String)
@@ -18,7 +20,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_sensor_body_entered(body: Node3D) -> void:
-    pass # Replace with function body.
+    if body is TriAnimal:
+        moveset.target = body
+        fsm.to_state(State.StateID.TOEAT)
+            
 
 
 func _on_reach_sensor_body_entered(body: Node3D) -> void:

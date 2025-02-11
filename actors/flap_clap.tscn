@@ -1,0 +1,83 @@
+[gd_scene load_steps=13 format=3 uid="uid://b5s47fmhbn7m6"]
+
+[ext_resource type="Script" path="res://actors/flapclap.gd" id="1_xqrpm"]
+[ext_resource type="PackedScene" uid="uid://bshy7uo06bimc" path="res://models/flapclap.glb" id="2_auh16"]
+[ext_resource type="Script" path="res://actors/components/moveset.gd" id="3_0yykb"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="4_yybfd"]
+[ext_resource type="Script" path="res://scripts/state_idle.gd" id="5_38rmf"]
+[ext_resource type="Script" path="res://scripts/state_wander.gd" id="6_kpe2g"]
+[ext_resource type="Script" path="res://scripts/state_toeat.gd" id="7_texq1"]
+[ext_resource type="Script" path="res://scripts/state_eat.gd" id="8_xx1vw"]
+[ext_resource type="Script" path="res://scripts/state_reverse.gd" id="9_kjq2a"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hyuyr"]
+radius = 0.35
+height = 1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_us0cf"]
+radius = 10.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b6r0l"]
+radius = 1.5
+
+[node name="FlapClap" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+collision_layer = 4
+collision_mask = 205
+script = ExtResource("1_xqrpm")
+fsm_state = null
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39957, 0)
+shape = SubResource("CapsuleShape3D_hyuyr")
+
+[node name="flapclap" parent="." instance=ExtResource("2_auh16")]
+
+[node name="Moveset" type="Node" parent="."]
+script = ExtResource("3_0yykb")
+
+[node name="FSM" type="Node" parent="." node_paths=PackedStringArray("initial_state", "pawn")]
+script = ExtResource("4_yybfd")
+initial_state = NodePath("Idle")
+pawn = NodePath("..")
+
+[node name="Idle" type="Node" parent="FSM"]
+script = ExtResource("5_38rmf")
+id = 7
+
+[node name="Wander" type="Node" parent="FSM"]
+script = ExtResource("6_kpe2g")
+id = 8
+
+[node name="ToEat" type="Node" parent="FSM"]
+script = ExtResource("7_texq1")
+id = 10
+
+[node name="Eat" type="Node" parent="FSM"]
+script = ExtResource("8_xx1vw")
+id = 9
+
+[node name="Reverse" type="Node" parent="FSM"]
+script = ExtResource("9_kjq2a")
+id = 12
+
+[node name="StateLabel" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.1, 0)
+text = "State"
+
+[node name="Sensor" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 78
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sensor"]
+shape = SubResource("CylinderShape3D_us0cf")
+
+[node name="ReachSensor" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 78
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ReachSensor"]
+shape = SubResource("CylinderShape3D_b6r0l")
+
+[connection signal="body_entered" from="Sensor" to="." method="_on_sensor_body_entered"]
+[connection signal="body_entered" from="ReachSensor" to="." method="_on_reach_sensor_body_entered"]

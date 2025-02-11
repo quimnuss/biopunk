@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name TriAnimal
 
 @onready var moveset: Moveset = $Moveset
 @onready var fsm: StateMachine = $FSM

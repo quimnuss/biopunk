@@ -1,0 +1,153 @@
+[gd_scene load_steps=21 format=3 uid="uid://d4frkvr1sojv5"]
+
+[ext_resource type="Script" path="res://actors/tri_animal/tri_animal.gd" id="1_ht6gm"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="2_su2ev"]
+[ext_resource type="Script" path="res://scripts/state_idle.gd" id="3_t5hp6"]
+[ext_resource type="Script" path="res://scripts/state_wander.gd" id="4_a8b4g"]
+[ext_resource type="Script" path="res://scripts/state_toeat.gd" id="5_yu04m"]
+[ext_resource type="Script" path="res://scripts/state_eat.gd" id="6_fcl3m"]
+[ext_resource type="Script" path="res://scripts/state_reverse.gd" id="7_78mjg"]
+[ext_resource type="Material" uid="uid://cx7uom35ef3p6" path="res://actors/tri_animal/mat_eyes.tres" id="8_k8mdj"]
+[ext_resource type="Script" path="res://actors/components/moveset.gd" id="9_l2e71"]
+[ext_resource type="Shader" path="res://materials/postprocess_outline.gdshader" id="10_mpppf"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ta762"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhk46"]
+albedo_color = Color(0.554016, 0.943804, 0.599484, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_vf5h3"]
+lightmap_size_hint = Vector2i(14, 21)
+material = SubResource("StandardMaterial3D_nhk46")
+add_uv2 = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q33u0"]
+albedo_color = Color(1, 0.505882, 0.486275, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ycnld"]
+material = SubResource("StandardMaterial3D_q33u0")
+radius = 0.2
+height = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ck6kq"]
+material = ExtResource("8_k8mdj")
+radius = 0.2
+height = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eo5eu"]
+render_priority = 0
+shader = ExtResource("10_mpppf")
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/depth_threshold = 0.025
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 1.65
+shader_parameter/min_thickness = 0.8
+shader_parameter/max_distance = 75.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_bu2rm"]
+material = SubResource("ShaderMaterial_eo5eu")
+flip_faces = true
+size = Vector2(10, 10)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_us0cf"]
+radius = 10.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b6r0l"]
+radius = 1.5
+
+[node name="TriAnimal" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.7596)
+collision_layer = 8
+collision_mask = 137
+script = ExtResource("1_ht6gm")
+
+[node name="FSM" type="Node" parent="." node_paths=PackedStringArray("initial_state", "pawn")]
+script = ExtResource("2_su2ev")
+initial_state = NodePath("Idle")
+pawn = NodePath("..")
+
+[node name="Idle" type="Node" parent="FSM"]
+script = ExtResource("3_t5hp6")
+id = 7
+
+[node name="Wander" type="Node" parent="FSM"]
+script = ExtResource("4_a8b4g")
+id = 8
+
+[node name="ToEat" type="Node" parent="FSM"]
+script = ExtResource("5_yu04m")
+id = 10
+
+[node name="Eat" type="Node" parent="FSM"]
+script = ExtResource("6_fcl3m")
+id = 9
+
+[node name="Reverse" type="Node" parent="FSM"]
+script = ExtResource("7_78mjg")
+id = 12
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
+shape = SubResource("SphereShape3D_ta762")
+
+[node name="MeshPivot" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.374864, 0)
+mesh = SubResource("PrismMesh_vf5h3")
+skeleton = NodePath("../../../../Attrezzo")
+
+[node name="Feet" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.302914, 0.371734)
+mesh = SubResource("CapsuleMesh_ycnld")
+skeleton = NodePath("../..")
+
+[node name="Eyes" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.6, 0.3)
+mesh = SubResource("CapsuleMesh_ck6kq")
+skeleton = NodePath("../..")
+
+[node name="Eyes2" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.6, 0.3)
+mesh = SubResource("CapsuleMesh_ck6kq")
+skeleton = NodePath("../..")
+
+[node name="Moveset" type="Node" parent="."]
+script = ExtResource("9_l2e71")
+
+[node name="DebugLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31204, 0)
+text = "999"
+
+[node name="PlayerCamera" type="Camera3D" parent="."]
+transform = Transform3D(-1, -2.99003e-08, 8.21505e-08, 0, 0.939693, 0.34202, -8.74228e-08, 0.34202, -0.939693, 0, 3, -4)
+
+[node name="MoebiusShader" type="MeshInstance3D" parent="PlayerCamera"]
+transform = Transform3D(-1, 2.14378e-08, -1.45851e-07, -1.70416e-08, 0.965926, 0.258819, 1.46429e-07, 0.258819, -0.965926, 0, 0, -2)
+visible = false
+mesh = SubResource("QuadMesh_bu2rm")
+skeleton = NodePath("../..")
+
+[node name="Sensor" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 142
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sensor"]
+shape = SubResource("CylinderShape3D_us0cf")
+
+[node name="ReachSensor" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 206
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ReachSensor"]
+shape = SubResource("CylinderShape3D_b6r0l")
+
+[node name="StateLabel" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.5, 0)
+text = "State"
