@@ -5,9 +5,9 @@ class_name StateMachine
 
 @onready var state: State = get_initial_state()
 
-@export var pawn : Node3D
-
 var states : Dictionary
+
+@export var pawn : Node3D
 
 func get_initial_state() -> State:
     return initial_state if initial_state != null else get_child(0)
