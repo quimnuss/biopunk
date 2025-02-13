@@ -27,3 +27,9 @@ mesh = SubResource("SphereMesh_r7of2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_5yoqs")
+
+[node name="AgeTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="AgeTimer" to="." method="_on_age_timer_timeout"]
