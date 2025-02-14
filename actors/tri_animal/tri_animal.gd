@@ -7,8 +7,8 @@ class_name TriAnimal
 @onready var sensor : Area3D = $Sensor
 @onready var reach_sensor : Area3D = $ReachSensor
 
-const SPEED = 7
-const HUNGER_SPEED = 10
+const SPEED = 2
+const HUNGER_SPEED = 5
 
 @export var fsm_state : String #State.StateID
 

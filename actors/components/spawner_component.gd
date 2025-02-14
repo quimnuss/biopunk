@@ -7,7 +7,7 @@ class_name Spawner
 
 @export var pawn : Node3D
 
-@export var neighbours : Array[Node3D]
+const PLANT_CARRYING_CAPACITY : int = 20
 
 func _ready():
     pawn = owner
@@ -22,13 +22,12 @@ func play():
 
 
 func can_spawn():
+    if get_tree().get_node_count_in_group('plants') > PLANT_CARRYING_CAPACITY:
+        return false
     for side in range(3):
-        neighbours = area_3d.get_overlapping_bodies()
-        if owner.name == "Plant":
-            print(neighbours)
         if area_3d.has_overlapping_bodies():
             debug_info.material_override = preload("res://materials/M_red.tres")
-            #self.rotate_y(PI/2)# + PI/5)
+            self.rotate_y(PI/2)# + PI/5)
         else:
             debug_info.material_override = preload("res://materials/M_yellow.tres")
             return true
@@ -36,25 +35,19 @@ func can_spawn():
 
 func _physics_process(delta: float) -> void:
     if area_3d.has_overlapping_bodies():
-        #prints(owner.name, Time.get_time_string_from_system(), area_3d.get_overlapping_bodies())
         debug_info.material_override = preload("res://materials/M_red.tres")
     else:
-        #prints(owner.name, Time.get_time_string_from_system(), ' nobodies')
         debug_info.material_override = preload("res://materials/M_yellow.tres")
 
-var has_spawned : bool = false
 
 func circle_spawn():
-    if has_spawned:
+    if not can_spawn():
         return
-    #if not can_spawn():
-        #return
-    has_spawned = true
-    var clone : Node3D = pawn.Instantiate(false, pawn)
+    var clone : Node3D = pawn.Instantiate(pawn)
     owner.add_sibling(clone)
-    #clone.rotate_y(randf_range(0, 2 * PI))
-    clone.global_position = area_3d.global_position + Vector3(0.3, 0, 0)
-    clone.initial_position = clone.global_position
+    clone.rotate_y(randf_range(0, 2 * PI))
+    clone.global_position = area_3d.global_position
+    clone.global_position.y = 0
 
 
 func _on_spawn_timer_timeout() -> void:

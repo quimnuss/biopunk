@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cng3sdabbh2gw"]
+[gd_scene load_steps=11 format=3 uid="uid://cng3sdabbh2gw"]
 
 [ext_resource type="Script" path="res://actors/plant.gd" id="1_hghx1"]
 [ext_resource type="Script" path="res://actors/components/spawner_component.gd" id="2_e148x"]
 [ext_resource type="Script" path="res://scripts/area_3d_static_fix.gd" id="3_ws66t"]
 [ext_resource type="Material" uid="uid://btogbkmp7cwfw" path="res://materials/M_yellow.tres" id="4_44lo8"]
+[ext_resource type="Material" uid="uid://dl55qncwdydoa" path="res://materials/M_red.tres" id="4_fjnkr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5mtyb"]
 albedo_color = Color(1, 0.815686, 0.372549, 1)
@@ -20,7 +21,7 @@ radius = 1.0
 material = ExtResource("4_44lo8")
 size = Vector3(0.3, 0.3, 0.3)
 
-[node name="Plant" type="StaticBody3D" groups=["spawnable"]]
+[node name="Plant" type="StaticBody3D" groups=["plants", "spawnable"]]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_hghx1")
@@ -32,7 +33,7 @@ mesh = SubResource("SphereMesh_r7of2")
 shape = SubResource("SphereShape3D_5yoqs")
 
 [node name="AgeTimer" type="Timer" parent="."]
-wait_time = 300.0
+wait_time = 25.0
 autostart = true
 
 [node name="GlobalSpawnTimer" type="Timer" parent="."]
@@ -50,11 +51,13 @@ script = ExtResource("3_ws66t")
 shape = SubResource("CylinderShape3D_jyn1l")
 
 [node name="SpawnTimer" type="Timer" parent="Spawner"]
-wait_time = 2.0
+wait_time = 10.0
 autostart = true
 
 [node name="DebugInfo" type="MeshInstance3D" parent="Spawner"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65411, -2.99914)
+visible = false
+material_override = ExtResource("4_fjnkr")
 mesh = SubResource("BoxMesh_ya2p8")
 
 [connection signal="timeout" from="AgeTimer" to="." method="_on_age_timer_timeout"]

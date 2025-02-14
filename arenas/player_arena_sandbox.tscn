@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=37 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://d4frkvr1sojv5" path="res://actors/tri_animal.tscn" id="9_2107o"]
 [ext_resource type="PackedScene" uid="uid://cng3sdabbh2gw" path="res://actors/plant.tscn" id="10_3o4ri"]
 [ext_resource type="PackedScene" uid="uid://b5s47fmhbn7m6" path="res://actors/flap_clap.tscn" id="10_ldpwe"]
-[ext_resource type="PackedScene" uid="uid://htpatqaeuf1x" path="res://actors/spawner.tscn" id="11_xwpfn"]
 [ext_resource type="Script" path="res://scripts/pickable.gd" id="12_elay6"]
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
@@ -93,10 +92,6 @@ size = Vector3(0.2, 0.2, 0.5)
 
 [sub_resource type="PrismMesh" id="PrismMesh_lkhwp"]
 size = Vector3(0.1, 0.1, 0.1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_sunki"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_ln10i"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sh0mn"]
 albedo_color = Color(0.682353, 0.482353, 0.466667, 1)
@@ -244,8 +239,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.93386, -0.492671, -9.58983)
 
 [node name="Attrezzo" type="Node" parent="."]
 
-[node name="Spawner" parent="Attrezzo" instance=ExtResource("11_xwpfn")]
-
 [node name="tree" parent="Attrezzo" instance=ExtResource("14_xc82r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66489, -0.5, -1.32291)
 
@@ -254,15 +247,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.0827737, -14)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/RotationTarget"]
 mesh = SubResource("PrismMesh_lkhwp")
-
-[node name="StaticBody3D2" type="StaticBody3D" parent="Attrezzo"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.83344, 1.15215, -9.69895)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Attrezzo/StaticBody3D2"]
-shape = SubResource("BoxShape3D_sunki")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Attrezzo/StaticBody3D2"]
-mesh = SubResource("BoxMesh_ln10i")
 
 [node name="Plant4" parent="Attrezzo" instance=ExtResource("10_3o4ri")]
 
@@ -277,6 +261,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -14, 6
 
 [node name="Plant" parent="Shelf" instance=ExtResource("10_3o4ri")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0.937195, 0)
+is_shelf = true
 
 [node name="Pickable" type="Node" parent="Shelf/Plant"]
 script = ExtResource("12_elay6")

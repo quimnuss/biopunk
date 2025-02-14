@@ -1,5 +1,5 @@
 extends Node3D
-class_name Spawner
+class_name GlobalSpawner
 
 enum Entities { PLANT }
 
