@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=40 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://d4frkvr1sojv5" path="res://actors/tri_animal.tscn" id="9_2107o"]
 [ext_resource type="PackedScene" uid="uid://cng3sdabbh2gw" path="res://actors/plant.tscn" id="10_3o4ri"]
 [ext_resource type="PackedScene" uid="uid://b5s47fmhbn7m6" path="res://actors/flap_clap.tscn" id="10_ldpwe"]
+[ext_resource type="PackedScene" uid="uid://htpatqaeuf1x" path="res://actors/spawner.tscn" id="11_xwpfn"]
 [ext_resource type="Script" path="res://scripts/pickable.gd" id="12_elay6"]
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
@@ -224,23 +225,26 @@ transform = Transform3D(0.908085, 0, 0.418787, 0, 1, 0, -0.418787, 0, 0.908085, 
 transform = Transform3D(0.823008, 0, 0.568031, 0, 1, 0, -0.568031, 0, 0.823008, 0, 0, -10.7596)
 
 [node name="FlapClap" parent="Fauna" instance=ExtResource("10_ldpwe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.482879, -5)
 
 [node name="FlapClap2" parent="Fauna" instance=ExtResource("10_ldpwe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.95061, 0, -6.57366)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.95061, -0.492671, -6.57366)
 
 [node name="FlapClap3" parent="Fauna" instance=ExtResource("10_ldpwe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52427, 0, -9.4587)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52427, -0.492671, -9.4587)
 
 [node name="FlapClap4" parent="Fauna" instance=ExtResource("10_ldpwe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.44223, 0, -2.90179)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.44223, -0.492671, -2.90179)
 
 [node name="FlapClap5" parent="Fauna" instance=ExtResource("10_ldpwe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.86858, 0, -9.85211)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.86858, -0.492671, -9.85211)
 
 [node name="FlapClap6" parent="Fauna" instance=ExtResource("10_ldpwe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.93386, 0, -9.58983)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.93386, -0.492671, -9.58983)
 
 [node name="Attrezzo" type="Node" parent="."]
+
+[node name="Spawner" parent="Attrezzo" instance=ExtResource("11_xwpfn")]
 
 [node name="tree" parent="Attrezzo" instance=ExtResource("14_xc82r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66489, -0.5, -1.32291)

@@ -13,7 +13,7 @@ static func state_names(key : StateID):
     return StateID.keys()[key]
 
 static func statename_to_id(state_name : String):
-    return StateID.keys().find(state_name)
+    return StateID.keys().find(state_name) as StateID
 
 @export var id : StateID = StateID.NONE
 

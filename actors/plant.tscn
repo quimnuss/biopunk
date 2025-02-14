@@ -1,12 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cng3sdabbh2gw"]
+[gd_scene load_steps=10 format=3 uid="uid://cng3sdabbh2gw"]
 
 [ext_resource type="Script" path="res://actors/plant.gd" id="1_hghx1"]
-[ext_resource type="Script" path="res://actors/components/spawner.gd" id="2_hraic"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pagsu"]
-transparency = 1
-blend_mode = 1
-albedo_color = Color(1, 1, 1, 0.458824)
+[ext_resource type="Script" path="res://actors/components/spawner_component.gd" id="2_e148x"]
+[ext_resource type="Script" path="res://scripts/area_3d_static_fix.gd" id="3_ws66t"]
+[ext_resource type="Material" uid="uid://btogbkmp7cwfw" path="res://materials/M_yellow.tres" id="4_44lo8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5mtyb"]
 albedo_color = Color(1, 0.815686, 0.372549, 1)
@@ -16,34 +13,51 @@ material = SubResource("StandardMaterial3D_5mtyb")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5yoqs"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_i2ckg"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jyn1l"]
 radius = 1.0
 
-[node name="Plant" type="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0, 0)
+[sub_resource type="BoxMesh" id="BoxMesh_ya2p8"]
+material = ExtResource("4_44lo8")
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="Plant" type="StaticBody3D" groups=["spawnable"]]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_hghx1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_overlay = SubResource("StandardMaterial3D_pagsu")
 mesh = SubResource("SphereMesh_r7of2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_5yoqs")
 
+[node name="AgeTimer" type="Timer" parent="."]
+wait_time = 300.0
+autostart = true
+
+[node name="GlobalSpawnTimer" type="Timer" parent="."]
+
 [node name="Spawner" type="Node3D" parent="."]
-script = ExtResource("2_hraic")
+script = ExtResource("2_e148x")
 
 [node name="Area3D" type="Area3D" parent="Spawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0, -1.71154)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_ws66t")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Spawner/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.344689)
-shape = SubResource("CylinderShape3D_i2ckg")
+shape = SubResource("CylinderShape3D_jyn1l")
 
-[node name="Timer" type="Timer" parent="Spawner"]
+[node name="SpawnTimer" type="Timer" parent="Spawner"]
 wait_time = 2.0
 autostart = true
 
-[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_timer_timeout"]
+[node name="DebugInfo" type="MeshInstance3D" parent="Spawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65411, -2.99914)
+mesh = SubResource("BoxMesh_ya2p8")
+
+[connection signal="timeout" from="AgeTimer" to="." method="_on_age_timer_timeout"]
+[connection signal="timeout" from="GlobalSpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="body_entered" from="Spawner/Area3D" to="Spawner" method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Spawner/SpawnTimer" to="Spawner" method="_on_spawn_timer_timeout"]
