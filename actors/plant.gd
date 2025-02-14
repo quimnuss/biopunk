@@ -54,7 +54,7 @@ func dehighlight():
 
 
 func pickup():
-    var actor : Node3D = self.duplicate()
+    var actor : Node3D = Instantiate()
     picked_up.emit(actor)
 
 
