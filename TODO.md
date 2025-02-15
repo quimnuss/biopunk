@@ -28,6 +28,7 @@
 # Done
 
 - [x] Node-based State machine
+- [x] self replicating plant
 
 # References
 

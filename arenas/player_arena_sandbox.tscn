@@ -207,11 +207,11 @@ mesh = SubResource("PrismMesh_bcvey")
 
 [node name="Fauna" type="Node" parent="."]
 
-[node name="TriAnimal" parent="Fauna" instance=ExtResource("9_2107o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5478, 0, -12.165)
-
 [node name="TriAnimal2" parent="Fauna" instance=ExtResource("9_2107o")]
 transform = Transform3D(0.979424, 0, -0.201813, 0, 1, 0, 0.201813, 0, 0.979424, -7.42037, 0, -11.8839)
+
+[node name="TriAnimal5" parent="Fauna" instance=ExtResource("9_2107o")]
+transform = Transform3D(0.979424, 0, -0.201813, 0, 1, 0, 0.201813, 0, 0.979424, -7.42037, 0, 8.72743)
 
 [node name="TriAnimal3" parent="Fauna" instance=ExtResource("9_2107o")]
 transform = Transform3D(0.908085, 0, 0.418787, 0, 1, 0, -0.418787, 0, 0.908085, -6.29607, 0, -6.37483)
