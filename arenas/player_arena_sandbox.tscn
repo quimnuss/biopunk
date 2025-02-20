@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=39 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
 [ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
+[ext_resource type="Script" path="res://scripts/mouse_3d.gd" id="17_0dgw5"]
 [ext_resource type="Script" path="res://ui/fps_counter.gd" id="19_s72fw"]
 
 [sub_resource type="Environment" id="Environment_ckg05"]
@@ -101,6 +102,8 @@ material = SubResource("StandardMaterial3D_sh0mn")
 size = Vector3(20, 0.2, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_5c0hk"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2jstf"]
 
 [node name="PlayerArenaSandbox" type="Node3D"]
 
@@ -309,6 +312,16 @@ script = ExtResource("19_s72fw")
 [node name="CameraSwitcher" type="Node" parent="." node_paths=PackedStringArray("godcamera")]
 script = ExtResource("16_kio3u")
 godcamera = NodePath("../GodCamera")
+
+[node name="Mouse3D" type="Node3D" parent="."]
+script = ExtResource("17_0dgw5")
+
+[node name="Marker3D" type="Marker3D" parent="Mouse3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mouse3D/Marker3D"]
+mesh = SubResource("PlaneMesh_2jstf")
+
+[node name="Node3D" type="Node3D" parent="Mouse3D"]
 
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
