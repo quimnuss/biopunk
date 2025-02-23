@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=41 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -15,6 +15,8 @@
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
 [ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
+[ext_resource type="Script" path="res://actors/player.gd" id="17_xvw61"]
+[ext_resource type="PackedScene" uid="uid://dsct084grrw4j" path="res://actors/player/human_explorer.tscn" id="18_o123w"]
 [ext_resource type="Script" path="res://ui/fps_counter.gd" id="19_s72fw"]
 
 [sub_resource type="Environment" id="Environment_ckg05"]
@@ -101,6 +103,10 @@ material = SubResource("StandardMaterial3D_sh0mn")
 size = Vector3(20, 0.2, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_5c0hk"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kpifr"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ij2q4"]
 
 [node name="PlayerArenaSandbox" type="Node3D"]
 
@@ -309,6 +315,20 @@ script = ExtResource("19_s72fw")
 [node name="CameraSwitcher" type="Node" parent="." node_paths=PackedStringArray("godcamera")]
 script = ExtResource("16_kio3u")
 godcamera = NodePath("../GodCamera")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34654, 14.0681)
+script = ExtResource("17_xvw61")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("CapsuleMesh_kpifr")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_ij2q4")
+
+[node name="human_explorer" parent="." instance=ExtResource("18_o123w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.72897, -0.5, 13.5069)
 
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
