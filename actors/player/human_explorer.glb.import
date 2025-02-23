@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dfxe7i76v26mr"
-path="res://.godot/imported/human_explorer9.glb-bb6b9466a1c5577e7dc009245d74e711.scn"
+path="res://.godot/imported/human_explorer.glb-d4086d2b92a63572d12c343859d12724.scn"
 
 [deps]
 
-source_file="res://actors/player/human_explorer9.glb"
-dest_files=["res://.godot/imported/human_explorer9.glb-bb6b9466a1c5577e7dc009245d74e711.scn"]
+source_file="res://actors/player/human_explorer.glb"
+dest_files=["res://.godot/imported/human_explorer.glb-d4086d2b92a63572d12c343859d12724.scn"]
 
 [params]
 

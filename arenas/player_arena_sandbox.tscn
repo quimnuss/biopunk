@@ -317,18 +317,19 @@ script = ExtResource("16_kio3u")
 godcamera = NodePath("../GodCamera")
 
 [node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34654, 14.0681)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.417645, 14.0681)
 script = ExtResource("17_xvw61")
 
+[node name="human_explorer" parent="Player" instance=ExtResource("18_o123w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.09892, 0)
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+visible = false
 mesh = SubResource("CapsuleMesh_kpifr")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_ij2q4")
-
-[node name="human_explorer" parent="." instance=ExtResource("18_o123w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.72897, -0.5, 13.5069)
 
 [connection signal="input_event" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_collision_area_input_event"]
 [connection signal="mouse_entered" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_entered"]
