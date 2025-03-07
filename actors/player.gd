@@ -5,6 +5,7 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 @onready var human_explorer: Node3D = $human_explorer
 
+var last_mouse_position : Vector3
 
 func _physics_process(delta: float) -> void:
     # Add the gravity.
@@ -20,7 +21,7 @@ func _physics_process(delta: float) -> void:
     if direction:
         velocity.x = direction.x * SPEED
         velocity.z = direction.z * SPEED
-        human_explorer.rotation.y = Vector2(input_dir.x, -input_dir.y).angle() + PI/2
+        #human_explorer.rotation.y = Vector2(input_dir.x, -input_dir.y).angle() + PI/2
         human_explorer.run()
     else:
         velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -29,3 +30,9 @@ func _physics_process(delta: float) -> void:
 
 
     move_and_slide()
+
+
+func _on_mouse_3d_mouse_position_changed(intersect_point: Vector3) -> void:
+    last_mouse_position = intersect_point
+    var last_mouse_position_on_plane : Vector3 = Vector3(last_mouse_position.x, human_explorer.global_position.y, last_mouse_position.z)
+    human_explorer.look_at(last_mouse_position_on_plane, Vector3.UP, true)

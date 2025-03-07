@@ -6,6 +6,8 @@ const RAY_LENGTH : float = 1000
 
 var ray_query : PhysicsRayQueryParameters3D
 
+signal mouse_position_changed(intersect_point : Vector3)
+
 func _ready():
     ray_query = PhysicsRayQueryParameters3D.new()
     ray_query.collide_with_areas = true
@@ -23,7 +25,8 @@ func _physics_process(delta):
     ray_query.to = to
     var raycast_result : Dictionary = space.intersect_ray(ray_query)
     if raycast_result:
-        var intersect_point = raycast_result.position
+        var intersect_point : Vector3 = raycast_result.position
+        mouse_position_changed.emit(intersect_point)
         
         marker_3d.global_position = intersect_point + 0.1*Vector3.UP
             

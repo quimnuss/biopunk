@@ -331,3 +331,4 @@ mesh = SubResource("PlaneMesh_iokyu")
 [connection signal="mouse_exited" from="Shelf/Plant" to="Shelf/Plant/Pickable" method="_on_mouse_exited"]
 [connection signal="picked_up" from="Shelf/Plant" to="DroppableLogic" method="_on_plant_picked_up"]
 [connection signal="toggled" from="PanelContainer/GodButton" to="CameraSwitcher" method="_on_god_button_toggled"]
+[connection signal="mouse_position_changed" from="Mouse3D" to="Player" method="_on_mouse_3d_mouse_position_changed"]
