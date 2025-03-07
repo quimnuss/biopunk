@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=40 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -15,8 +15,7 @@
 [ext_resource type="Script" path="res://scripts/droppable_logic.gd" id="13_rhjl3"]
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
 [ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
-[ext_resource type="Script" path="res://actors/player.gd" id="17_xvw61"]
-[ext_resource type="PackedScene" uid="uid://dsct084grrw4j" path="res://actors/player/human_explorer.tscn" id="18_o123w"]
+[ext_resource type="PackedScene" uid="uid://bqd01hk4o0ujg" path="res://actors/player/player_explorer.tscn" id="17_mj8cf"]
 [ext_resource type="Script" path="res://ui/fps_counter.gd" id="19_s72fw"]
 [ext_resource type="Script" path="res://scripts/mouse_3d.gd" id="19_uhljy"]
 
@@ -105,10 +104,6 @@ size = Vector3(20, 0.2, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_5c0hk"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_kpifr"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ij2q4"]
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_iokyu"]
 
 [node name="PlayerArenaSandbox" type="Node3D"]
@@ -117,7 +112,7 @@ size = Vector3(20, 0.2, 1)
 environment = SubResource("Environment_ckg05")
 
 [node name="GodCamera" type="Camera3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0.866025, -0.5, 0, 0.5, 0.866025, 1, 3.78552e-08, -2.18557e-08, -13.0091, 15.6584, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 15.15, 13)
 current = true
 fov = 80.0
 size = 25.0
@@ -184,7 +179,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
 shape = SubResource("BoxShape3D_d0vvu")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.31352, 0.778988, -0.543032, 0.389494, 0.627039, 0.674623, 0.866025, 0, -0.5, 0, 10, 0)
+transform = Transform3D(0.849892, -0.526956, 0, 0.389133, 0.627608, 0.674302, -0.355328, -0.573085, 0.738455, 0, 10, 0)
 shadow_enabled = true
 
 [node name="PhantomCamera3D" type="Node3D" parent="."]
@@ -266,7 +261,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.10217, 0, 10.5263)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80711, 0, 12.9817)
 
 [node name="Shelf" type="Node3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -14, 6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 14)
 
 [node name="Plant" parent="Shelf" instance=ExtResource("10_3o4ri")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297706, 0.937195, 0)
@@ -319,20 +314,8 @@ script = ExtResource("19_s72fw")
 script = ExtResource("16_kio3u")
 godcamera = NodePath("../GodCamera")
 
-[node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.417645, 14.0681)
-script = ExtResource("17_xvw61")
-
-[node name="human_explorer" parent="Player" instance=ExtResource("18_o123w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.09892, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
-visible = false
-mesh = SubResource("CapsuleMesh_kpifr")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-shape = SubResource("CapsuleShape3D_ij2q4")
+[node name="Player" parent="." instance=ExtResource("17_mj8cf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.28316)
 
 [node name="Mouse3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.0703)
