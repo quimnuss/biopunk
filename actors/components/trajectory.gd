@@ -1,24 +1,27 @@
 extends Node3D
 class_name Trajectory
 
-func parabola(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE, persist_ms = 0):
-    var mesh_instance := MeshInstance3D.new()
-    var immediate_mesh := ImmediateMesh.new()
-    var material := ORMMaterial3D.new()
+var mesh_instance := MeshInstance3D.new()
+@export var trajectory_material : ORMMaterial3D
+var immediate_mesh := ImmediateMesh.new()
 
+const sampling_distance := 0.1
+const max_height := 4.0
+
+func _ready():
     mesh_instance.mesh = immediate_mesh
     mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+    add_child(mesh_instance)
 
+func parabola(pos1: Vector3, pos2: Vector3):
     var direction := (pos2 - pos1).normalized()
     
-    var step_point := pos1
-        
-    const sampling_distance := 0.1
-    const max_height := 4.0
+    var step_point := pos1        
     
-    var numsteps := pos1.distance_to(pos2)/sampling_distance + 1
-    
-    immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES, material)
+    var numsteps : int = int(pos1.distance_to(pos2)/sampling_distance)
+    numsteps = numsteps + numsteps%2
+    immediate_mesh.clear_surfaces()
+    immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES, trajectory_material)
     immediate_mesh.surface_add_vertex(pos1)
     for step in range(numsteps):
         var height : float = -4*max_height/pos1.distance_squared_to(pos2) * step * sampling_distance*(step * sampling_distance - pos1.distance_to(pos2))
@@ -28,10 +31,8 @@ func parabola(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE, persist_m
     immediate_mesh.surface_add_vertex(pos2)
     immediate_mesh.surface_end()
 
-    material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-    material.albedo_color = color
-
-    return await final_cleanup(mesh_instance, persist_ms)
+    # we're reusing the mesh, no need to automatically delete it
+    #return await final_cleanup(mesh_instance, persist_ms)
 
 func line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE, persist_ms = 0):
     var mesh_instance := MeshInstance3D.new()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=42 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -104,6 +104,10 @@ material = SubResource("StandardMaterial3D_sh0mn")
 size = Vector3(20, 0.2, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_5c0hk"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_v78v7"]
+shading_mode = 0
+albedo_color = Color(0.646819, 0.969853, 0.991315, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_iokyu"]
 
@@ -319,8 +323,9 @@ godcamera = NodePath("../GodCamera")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.28316)
 
 [node name="Trajectory" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.28316)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 script = ExtResource("18_r1lg4")
+trajectory_material = SubResource("ORMMaterial3D_v78v7")
 
 [node name="Mouse3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.0703)

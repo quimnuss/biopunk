@@ -26,13 +26,14 @@ func _physics_process(delta: float) -> void:
         velocity.z = move_toward(velocity.z, 0, SPEED)
         human_explorer.idle()
 
+    trajectory.parabola(Vector3.ZERO, trajectory_point - global_position)
     move_and_slide()
 
+var trajectory_point : Vector3
 
 func _on_mouse_3d_mouse_position_changed(intersect_point: Vector3) -> void:
     last_mouse_position = intersect_point
     var last_mouse_position_on_plane : Vector3 = Vector3(last_mouse_position.x, human_explorer.global_position.y, last_mouse_position.z)
     human_explorer.look_at(last_mouse_position_on_plane, Vector3.UP, true)
-    
-    trajectory.parabola(global_position, intersect_point, 1)
+    trajectory_point = intersect_point
     
