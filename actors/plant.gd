@@ -16,9 +16,9 @@ var creator : Node3D
 
 signal picked_up(actor : Node3D)
 
-static func Instantiate(creator : Node3D = null) -> BallPlant:
+static func Instantiate(a_creator : Node3D = null) -> BallPlant:
     var plant : BallPlant = preload('res://actors/plant.tscn').instantiate()
-    plant.creator = creator
+    plant.creator = a_creator
     return plant
     
 

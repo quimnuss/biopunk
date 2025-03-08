@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://ecrpsuk7buqt"]
+[gd_scene load_steps=41 format=3 uid="uid://ecrpsuk7buqt"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eb0w6"]
 [ext_resource type="Script" path="res://arenas/mouse_selector.gd" id="1_kjksx"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://decgytchkqq7p" path="res://models/tree.blend" id="14_xc82r"]
 [ext_resource type="Script" path="res://scripts/camera_switcher.gd" id="16_kio3u"]
 [ext_resource type="PackedScene" uid="uid://bqd01hk4o0ujg" path="res://actors/player/player_explorer.tscn" id="17_mj8cf"]
+[ext_resource type="Script" path="res://actors/components/trajectory.gd" id="18_r1lg4"]
 [ext_resource type="Script" path="res://ui/fps_counter.gd" id="19_s72fw"]
 [ext_resource type="Script" path="res://scripts/mouse_3d.gd" id="19_uhljy"]
 
@@ -316,6 +317,10 @@ godcamera = NodePath("../GodCamera")
 
 [node name="Player" parent="." instance=ExtResource("17_mj8cf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.28316)
+
+[node name="Trajectory" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.28316)
+script = ExtResource("18_r1lg4")
 
 [node name="Mouse3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.0703)
