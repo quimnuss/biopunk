@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ct5v6md1ok4lx"]
 
-[ext_resource type="Script" path="res://scripts/pickable_test.gd" id="1_7l16g"]
-[ext_resource type="Script" path="res://scripts/pickable.gd" id="2_8lunb"]
+[ext_resource type="Script" uid="uid://c7w7ggsgwctxm" path="res://scripts/pickable_test.gd" id="1_7l16g"]
+[ext_resource type="Script" uid="uid://c3pgx1eblexar" path="res://scripts/pickable.gd" id="2_8lunb"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_1tqi8"]
 size = Vector3(10, 1, 1)

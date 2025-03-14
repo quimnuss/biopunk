@@ -1,11 +1,11 @@
 [gd_scene load_steps=25 format=3 uid="uid://ceeax852hxeal"]
 
 [ext_resource type="Texture2D" uid="uid://cp2h31a1d7du6" path="res://arenas/groundnoise.tres" id="1_eaad7"]
-[ext_resource type="Script" path="res://objects/actors/player.gd" id="2_c02nu"]
-[ext_resource type="Script" path="res://objects/camera_3d.gd" id="3_2ym5s"]
-[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="4_f0q5k"]
-[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="5_fxmc6"]
-[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_de4hh"]
+[ext_resource type="Script" uid="uid://0gorww10xng8" path="res://objects/actors/player.gd" id="2_c02nu"]
+[ext_resource type="Script" uid="uid://d4k8or8aepdt1" path="res://objects/camera_3d.gd" id="3_2ym5s"]
+[ext_resource type="Script" uid="uid://w2nxqe438uvu" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="4_f0q5k"]
+[ext_resource type="Script" uid="uid://cs160ym8jp7x0" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="5_fxmc6"]
+[ext_resource type="Script" uid="uid://c1oivk41gau44" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_de4hh"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bv01g"]
 

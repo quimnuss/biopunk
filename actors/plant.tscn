@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=3 uid="uid://cng3sdabbh2gw"]
 
-[ext_resource type="Script" path="res://actors/plant.gd" id="1_hghx1"]
-[ext_resource type="Script" path="res://actors/components/spawner_component.gd" id="2_e148x"]
-[ext_resource type="Script" path="res://scripts/area_3d_static_fix.gd" id="3_ws66t"]
+[ext_resource type="Script" uid="uid://dcggypq11c7bc" path="res://actors/plant.gd" id="1_hghx1"]
+[ext_resource type="Script" uid="uid://b87uf3esglqfy" path="res://actors/components/spawner_component.gd" id="2_e148x"]
+[ext_resource type="Script" uid="uid://d35c270wbbr74" path="res://scripts/area_3d_static_fix.gd" id="3_ws66t"]
 [ext_resource type="Material" uid="uid://btogbkmp7cwfw" path="res://materials/M_yellow.tres" id="4_44lo8"]
 [ext_resource type="Material" uid="uid://dl55qncwdydoa" path="res://materials/M_red.tres" id="4_fjnkr"]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsct084grrw4j"]
 
 [ext_resource type="PackedScene" uid="uid://dfxe7i76v26mr" path="res://actors/player/human_explorer.glb" id="1_6k7o4"]
-[ext_resource type="Script" path="res://actors/player/human_explorer.gd" id="2_mk4s4"]
+[ext_resource type="Script" uid="uid://ucgt8t0f46lj" path="res://actors/player/human_explorer.gd" id="2_mk4s4"]
 
 [node name="human_explorer9" instance=ExtResource("1_6k7o4")]
 script = ExtResource("2_mk4s4")

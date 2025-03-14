@@ -1,14 +1,14 @@
 [gd_scene load_steps=13 format=3 uid="uid://b5s47fmhbn7m6"]
 
-[ext_resource type="Script" path="res://actors/flapclap.gd" id="1_xqrpm"]
+[ext_resource type="Script" uid="uid://dq2w8yjkb5vvk" path="res://actors/flapclap.gd" id="1_xqrpm"]
 [ext_resource type="PackedScene" uid="uid://bshy7uo06bimc" path="res://models/flapclap.glb" id="2_auh16"]
-[ext_resource type="Script" path="res://actors/components/moveset.gd" id="3_0yykb"]
-[ext_resource type="Script" path="res://scripts/state_machine.gd" id="4_yybfd"]
-[ext_resource type="Script" path="res://scripts/state_idle.gd" id="5_38rmf"]
-[ext_resource type="Script" path="res://scripts/state_wander.gd" id="6_kpe2g"]
-[ext_resource type="Script" path="res://scripts/state_toeat.gd" id="7_texq1"]
-[ext_resource type="Script" path="res://scripts/state_eat.gd" id="8_xx1vw"]
-[ext_resource type="Script" path="res://scripts/state_reverse.gd" id="9_kjq2a"]
+[ext_resource type="Script" uid="uid://dj7q3w4n15hug" path="res://actors/components/moveset.gd" id="3_0yykb"]
+[ext_resource type="Script" uid="uid://brtktg4dv1tg6" path="res://scripts/state_machine.gd" id="4_yybfd"]
+[ext_resource type="Script" uid="uid://b6vhenb806u7f" path="res://scripts/state_idle.gd" id="5_38rmf"]
+[ext_resource type="Script" uid="uid://b6ilw2i1io4n1" path="res://scripts/state_wander.gd" id="6_kpe2g"]
+[ext_resource type="Script" uid="uid://cc8ifqi6ww025" path="res://scripts/state_toeat.gd" id="7_texq1"]
+[ext_resource type="Script" uid="uid://dlynlwtattxw4" path="res://scripts/state_eat.gd" id="8_xx1vw"]
+[ext_resource type="Script" uid="uid://by6q5471uqoif" path="res://scripts/state_reverse.gd" id="9_kjq2a"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hyuyr"]
 radius = 0.35
